@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.event-card{
+    background: linear-gradient(145deg,#0f172a,#111827);
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    max-width: 850px;
+}
+
+.section-title{
+    font-size: 22px;
+    font-weight: 700;
+    color:#a78bfa;
+    margin-bottom:15px;
+}
+
+.info-box{
+    background:#1e293b;
+    padding:12px 15px;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
+.action-btn{
+    padding:10px 16px;
+    border-radius:10px;
+    font-weight:600;
+    text-decoration:none;
+    display:inline-block;
+    margin-top:12px;
+}
+</style>
+
+<div class="event-card">
+
+<h2 class="section-title">🎯 {{ event.title }}</h2>
+
+<div class="info-box">📌 Type: {{ event.type }}</div>
+<div class="info-box">📝 {{ event.description }}</div>
+
+{% if deadline_passed %}
+<p style="color:red;"><strong>🔒 Registration Closed</strong></p>
+{% else %}
+<p style="color:green;"><strong>🟢 Registration Open</strong></p>
+{% endif %}
+
+<div class="info-box">
+<strong>Registration Deadline:</strong>
+{% if event.registration_deadline_date %}
+    {{ event.registration_deadline_date }} | {{ event.registration_deadline_time }}
+{% else %}
+    Not set
+{% endif %}
+</div>
+
+<div class="info-box">📍 Place: {{ event.place }}</div>
+
+<h3 class="section-title">👨‍🏫 Staff Incharge</h3>
+{% for s in staff_incharges %}
+ - {{ s.staff }}
+{% endfor %}
+
+<h3 class="section-title">👨‍🎓 Student Heads</h3>
+{% for h in student_heads %}
+ - {{ h.student }}
+{% endfor %}
+
+<p>Participants: {{ participants_count }} / {{ event.max_participants }}</p>
+
+{% if can_view_participants %}
+<h3 class="section-title">👥 Participants</h3>
+
+{% if participants_list %}
+<table border="1" cellpadding="8">
+<tr>
+    <th>Name</th>
+    <th>Department</th>
+    <th>Year</th>
+    <th>Gender</th>
+</tr>
+
+{% for p in participants_list %}
+<tr>
+    <td>{{ p.student.get_full_name|default:p.student.username }}</td>
+    <td>{{ p.student.student.department }}</td>
+    <td>{{ p.student.student.year }}</td>
+    <td>{{ p.student.student.gender }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p>No participants yet</p>
+{% endif %}
+
+{% if deadline_passed %}
+<a href="{% url 'download_report' event.id %}" class="action-btn"
+style="background:#22c55e;color:white;">
+📄 Download Report
+</a>
+{% endif %}
+{% endif %}
+
+{% if not deadline_passed and can_register %}
+    {% if already_registered %}
+    <a href="{% url 'cancel_registration' event.id %}" class="action-btn"
+    style="background:#ef4444;color:white;">
+    Cancel Registration ❌
+    </a>
+    {% else %}
+    <a href="{% url 'register_event' event.id %}" class="action-btn"
+    style="background:#22c55e;color:white;">
+    Register for Event ✅
+    </a>
+    {% endif %}
+{% endif %}
+
+<br><br>
+
+<a href="{% url 'all_events' %}" style="color:#6a5af9;">
+← Back to Events
+</a>
+
+</div>
+
+{% endblock %}

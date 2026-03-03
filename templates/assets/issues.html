@@ -1,0 +1,61 @@
+{% extends "base.html" %} {% block content %}
+<h2>🛠 Asset Issues</h2>
+
+<table class="asset-table">
+  <tr>
+    <th>Asset</th>
+    <th>Issue</th>
+    <th>Priority</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+
+  {% for issue in issues %}
+  <tr>
+    <td>{{ issue.asset }}</td>
+    <td>{{ issue.issue_text }}</td>
+    <td>{{ issue.priority }}</td>
+    <td>{{ issue.status }}</td>
+    <td>
+      {% if issue.status == "open" %}
+      <a href="/assets/issues/update/{{ issue.id }}/repair/" class="btn">
+        Start Repair
+      </a>
+
+      {% elif issue.status == "repair" %}
+      <a href="/assets/issues/update/{{ issue.id }}/completed/" class="btn">
+        Mark Completed
+      </a>
+
+      {% else %} ✔ Completed {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+<a href="/dashboard/" class="back-btn">⬅ Back</a>
+<style>
+  .back-btn {
+    display: inline-block;
+    margin-bottom: 15px;
+    padding: 8px 16px;
+    background: #334155;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .back-btn:hover {
+    background: #475569;
+  }
+
+  .btn{
+    background:#22c55e;
+    color:white;
+    padding:6px 12px;
+    border-radius:6px;
+    text-decoration:none;
+}
+
+</style>
+{% endblock %}

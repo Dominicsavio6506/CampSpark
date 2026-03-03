@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="staff-header fade-in">
+  <h2>📢 Complaint Management</h2>
+  <p>Track and update student grievances</p>
+</div>
+
+<div class="staff-box">
+
+{% if complaints %}
+<table class="erp-table">
+  <tr>
+    <th>Category</th>
+    <th>Urgency</th>
+    <th>Department</th>
+    <th>Status</th>
+  </tr>
+
+  {% for c in complaints %}
+  <tr style="transition:0.2s;">
+    <td><b>{{ c.category }}</b></td>
+
+    <td>
+      {% if c.urgency == "High" %}
+        <span style="color:#ff6b6b;">{{ c.urgency }}</span>
+      {% else %}
+        <span style="color:#facc15;">{{ c.urgency }}</span>
+      {% endif %}
+    </td>
+
+    <td>{{ c.department }}</td>
+
+    <td>
+      <form method="POST" action="{% url 'update_status' c.id %}" style="display:flex; gap:8px;">
+        {% csrf_token %}
+
+        <select name="status" style="
+          padding:6px 10px;
+          border-radius:8px;
+          background:rgba(255,255,255,0.1);
+          color:white;
+          border:none;
+        ">
+          <option value="Pending" {% if c.status == "Pending" %}selected{% endif %}>Pending</option>
+          <option value="In Progress" {% if c.status == "In Progress" %}selected{% endif %}>In Progress</option>
+          <option value="Resolved" {% if c.status == "Resolved" %}selected{% endif %}>Resolved</option>
+          <option value="Rejected" {% if c.status == "Rejected" %}selected{% endif %}>Rejected</option>
+        </select>
+
+        <button class="btn" style="
+          padding:6px 12px;
+          border-radius:8px;
+          background:linear-gradient(135deg,#6a5af9,#8b5cf6);
+          border:none;
+          color:white;
+          font-weight:600;
+        ">
+          Save
+        </button>
+      </form>
+
+      <div style="margin-top:6px; font-size:13px;">
+        {% if c.status == "Resolved" %}
+          <span style="color:#4ade80;">✔ Resolved</span>
+        {% elif c.status == "Rejected" %}
+          <span style="color:#f87171;">✖ Rejected</span>
+        {% elif c.status == "In Progress" %}
+          <span style="color:#facc15;">⏳ In Progress</span>
+        {% else %}
+          <span style="color:#cbd5f5;">Pending</span>
+        {% endif %}
+      </div>
+    </td>
+
+  </tr>
+  {% endfor %}
+</table>
+
+{% else %}
+<div class="empty-box">
+  🚫 No complaints registered yet.
+</div>
+{% endif %}
+
+</div>
+
+{% endblock %}

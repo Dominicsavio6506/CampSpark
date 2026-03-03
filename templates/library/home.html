@@ -1,0 +1,62 @@
+{% extends "base.html" %} {% block content %}
+<!-- MAIN ROW FOR BOOK CARDS -->
+<div class="row g-3 mt-3">
+  <!-- DEPARTMENT FILTER FORM -->
+  <form method="GET" class="mb-3">
+    <select name="dept" onchange="this.form.submit()" class="form-select w-25">
+      <option value="">All Departments</option>
+      {% for d in departments %}
+      <option value="{{ d }}">{{ d }}</option>
+      {% endfor %}
+    </select>
+  </form>
+
+  {% for book in books %}
+
+  <div class="col-md-4 mb-3">
+    <div
+      class="card h-100 shadow-sm"
+      style="
+        border-radius: 12px;
+        background: #0f172a;
+        padding: 8px;
+        color: white;
+      "
+    >
+      {% if book.cover_image %}
+      <img src="{{ book.cover_image.url }}" class="card-img-top library-img" />
+      {% endif %}
+
+      <div class="p-2">
+        <h6>{{ book.title }}</h6>
+        <small style="color: #cbd5e1">{{ book.author }}</small><br />
+        <small>Available: {{ book.available_quantity }}</small>
+      </div>
+
+      <div class="mt-auto">
+        {% if book.available_quantity <= 0 %}
+        <button class="btn btn-sm btn-secondary w-100" disabled>
+          Out of Stock
+        </button>
+
+        {% elif book.id in taken_books %}
+        <button class="btn btn-sm btn-warning w-100" disabled>
+          Already Taken
+        </button>
+
+        {% else %}
+        <a
+          href="{% url 'issue_book' book.id %}"
+          class="btn btn-sm btn-primary w-100"
+        >
+          Get Book
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+</div>
+
+{% endblock %}

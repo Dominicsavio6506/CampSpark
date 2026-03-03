@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>🏆 Rank List</h2>
+
+<table border="1">
+<tr>
+<th>Rank</th>
+<th>Student</th>
+<th>Average</th>
+</tr>
+
+{% for s, avg in rank_data %}
+<tr>
+<td>{{ forloop.counter }}</td>
+<td>{{ s.name }}</td>
+<td>{{ avg }}</td>
+</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

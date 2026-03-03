@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>📝 Upload Exam Marks</h2>
+
+<form method="POST">
+{% csrf_token %}
+
+<select name="student" required>
+{% for s in students %}
+<option value="{{ s.id }}">{{ s.name }}</option>
+{% endfor %}
+</select>
+
+<select name="exam" required>
+{% for e in exams %}
+<option value="{{ e.id }}">{{ e.name }}</option>
+{% endfor %}
+</select>
+
+<input name="subject" placeholder="Subject" required>
+<input name="internal" type="number" placeholder="Internal Marks">
+<input name="semester" type="number" placeholder="Semester Marks">
+
+<button type="submit">Save Marks</button>
+</form>
+
+{% endblock %}

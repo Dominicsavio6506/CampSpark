@@ -1,0 +1,54 @@
+<h3>Today Focus</h3>
+
+<div style="
+margin-top:10px;
+padding:12px;
+background:#e0ecff;
+border-radius:10px;">
+<h4>📅 Upcoming Events</h4>
+<b>{{ upcoming_events }}</b>
+</div>
+
+<div style="display:flex; gap:10px;">
+
+<div style="padding:10px;
+background:
+{% if attendance_color == 'red' %}#ffcccc
+{% elif attendance_color == 'yellow' %}#fff3cd
+{% else %}#ccffcc
+{% endif %};">
+Attendance: {{ focus.attendance }}%
+</div>
+
+<div style="padding:10px;
+background:
+{% if fee_color == 'red' %}#ffcccc
+{% else %}#ccffcc
+{% endif %};">
+Fee Due: ₹{{ focus.fee_due }}
+</div>
+</div>
+
+<div style="margin-top:10px; padding:8px; background:#e0f2fe; border-radius:8px;">
+  💡 {{ suggestion }}
+</div>
+
+</div>
+<h3>Reminders</h3>
+
+{% for r in all_reminders %}
+<div style="padding:10px; margin:5px;
+background:{% if r.color == 'red' %}#ffcccc{% elif r.color == 'yellow' %}#fff3cd{% else %}#ccffcc{% endif %};">
+<b>{{ r.title }}</b><br>
+{{ r.message }}
+
+{% if not r.is_read %}
+<form method="post" action="/dashboard/mark_read/{{ r.id }}/">
+{% csrf_token %}
+<button type="submit">Mark Read</button>
+</form>
+{% endif %}
+</div>
+{% empty %}
+<p>No reminders today 🎉</p>
+{% endfor %}

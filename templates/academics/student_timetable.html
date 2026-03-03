@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block content %}
+
+<style>
+.timetable-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.timetable-card {
+  width: 100%;
+  max-width: 900px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(16px);
+  border-radius: 22px;
+  padding: 30px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+}
+
+body.light .timetable-card {
+  background: rgba(0,0,0,0.04);
+}
+
+.timetable-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.timetable-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 8px;
+  text-align: center;
+}
+
+.timetable-table th {
+  padding: 14px;
+  font-size: 13px;
+  background: rgba(99,102,241,0.25);
+  color: white;
+  border-radius: 10px;
+}
+
+.timetable-table td {
+  padding: 14px;
+  font-size: 13px;
+  line-height: 1.2;
+  vertical-align: middle;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+}
+
+body.light .timetable-table td {
+  background: rgba(0,0,0,0.04);
+}
+
+.free {
+  opacity: 0.5;
+  font-style: italic;
+}
+
+.timetable-table td:first-child {
+  width: 90px;
+  font-weight: 600;
+}
+
+.timetable-table small {
+  font-size: 11px;
+  opacity: 0.8;
+}
+.timetable-card {
+  padding: 20px;
+}
+
+</style>
+
+<div class="timetable-wrapper">
+  <div class="timetable-card">
+
+    <div class="timetable-title">
+      📅 My Weekly Timetable
+    </div>
+
+    <table class="timetable-table">
+      <tr>
+        <th>Time</th>
+        {% for d in days %}
+          <th>{{ d }}</th>
+        {% endfor %}
+      </tr>
+
+      {% for slot, daydata in table.items %}
+      <tr>
+        <td><strong>{{ slot.slot_name }}</strong></td>
+        {% for d in days %}
+          <td>
+              {% with entry=daydata|get_item:d %}
+              {% if entry %}
+                {{ entry.subject }} <br>
+                <small>{{ entry.classroom }}</small>
+              {% else %}
+                <span class="free">Free</span>
+              {% endif %}
+            {% endwith %}
+          </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}

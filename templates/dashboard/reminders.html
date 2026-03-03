@@ -1,0 +1,17 @@
+<h3>All Reminders</h3>
+
+{% for r in reminders %}
+<div style="padding:10px; margin:5px;
+background:{% if r.color == 'red' %}#ffcccc{% elif r.color == 'yellow' %}#fff3cd{% else %}#ccffcc{% endif %};">
+<b>{{ r.title }}</b><br>
+{{ r.message }}
+
+{% if not r.is_read %}
+<form method="post" action="/dashboard/mark_read/{{ r.id }}/">
+{% csrf_token %}
+<button type="submit">Mark Read</button>
+</form>
+{% endif %}
+</div>
+{% endfor %}
+

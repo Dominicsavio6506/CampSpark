@@ -1,0 +1,33 @@
+<h2>📊 My Attendance</h2>
+
+{% if error %}
+<p style="color:red">{{ error }}</p>
+{% else %}
+
+<p><strong>Total Classes:</strong> {{ total }}</p>
+<p><strong>Present:</strong> {{ present }}</p>
+<p><strong>Attendance %:</strong> {{ percent }}%</p>
+
+<hr>
+
+<table border="1" cellpadding="6">
+<tr>
+    <th>Date</th>
+    <th>Status</th>
+</tr>
+
+{% for r in records %}
+<tr>
+    <td>{{ r.attendance.date }}</td>
+    <td>
+        {% if r.present %}
+            ✅ Present
+        {% else %}
+            ❌ Absent
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+{% endif %}

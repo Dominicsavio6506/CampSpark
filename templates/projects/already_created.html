@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% block content %}
+
+<h2>Project Already Created</h2>
+
+<p>You already created a project.</p>
+
+<p><b>{{ project.title }}</b></p>
+
+<a href="{% url 'project_detail' project.id %}">
+    View Project
+</a>
+<br /><br />
+
+<button onclick="history.back()" class="btn btn-secondary mb-3">← Back</button>
+
+{% endblock %}

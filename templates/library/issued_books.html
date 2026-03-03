@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>📖 Issued Books</h3>
+<a href="/library/panel/" class="back-btn">⬅ Back</a>
+<style>
+  .back-btn {
+    display: inline-block;
+    margin-bottom: 15px;
+    padding: 8px 16px;
+    background: #334155;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .back-btn:hover {
+    background: #475569;
+  }
+
+  .btn{
+    background:#22c55e;
+    color:white;
+    padding:6px 12px;
+    border-radius:6px;
+    text-decoration:none;
+}
+
+</style>
+    </div>
+
+    <form method="GET" class="row g-2 mb-3">
+
+        <div class="col-md-4">
+            <input type="number"
+                   name="student_id"
+                   value="{{ request.GET.student_id }}"
+                   placeholder="Enter Student ID"
+                   class="form-control">
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100">
+                Filter
+            </button>
+        </div>
+
+        <div class="col-md-2">
+            <a href="/library/issued/"
+               class="btn btn-outline-light w-100">
+                Reset
+            </a>
+        </div>
+
+    </form>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <div class="card p-3 text-center">
+                <h5>Total Issued</h5>
+                <h3>{{ records|length }}</h3>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle custom-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Student</th>
+                    <th>Book</th>
+                    <th>Issued On</th>
+                    <th>Due Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in records %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                        {{ r.student.username }}
+                        <br>
+                        <small class="text-muted">
+                            ID: {{ r.student.id }}
+                        </small>
+                    </td>
+                    <td>{{ r.book.title }}</td>
+                    <td>{{ r.issue_date }}</td>
+                    <td>
+                        {% if r.due_date < now %}
+                            <span class="badge bg-danger">
+                                Overdue
+                            </span>
+                        {% else %}
+                            <span class="badge bg-info">
+                                {{ r.due_date|date:"d M Y" }}
+                            </span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <a href="{% url 'return_book' r.id %}"
+                           class="btn btn-sm btn-success">
+                           Return
+                        </a>
+                    </td>
+
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">
+                        No active issued books.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="container mt-3">
+  <h3>Projects</h3>
+
+  <button onclick="history.back()" class="btn btn-secondary mb-3">
+    ← Back
+  </button>
+
+  <table class="table table-bordered table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>S.No</th>
+        <th>Student</th>
+        <th>Project Title</th>
+        <th>Select Option</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for p in projects %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ p.created_by }}</td>
+        <td>{{ p.title }}</td>
+        <td>
+          {% if p.guide_staff %}
+          <span class="badge bg-success">
+            ✔ Selected by {{ p.guide_staff }}
+          </span>
+          {% else %}
+          <a
+            href="{% url 'assign_project' p.id %}"
+            class="btn btn-sm btn-primary"
+          >
+            Select Team
+          </a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

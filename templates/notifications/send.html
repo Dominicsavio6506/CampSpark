@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Send Notification</h2>
+<div class="notify-wrapper">
+<div class="notify-card">
+
+<form method="post">
+  {% csrf_token %}
+  <input name="title" placeholder="Title"><br><br>
+  <textarea name="message" placeholder="Message"></textarea><br><br>
+
+  <select name="category">
+    <option value="general">General</option>
+    <option value="exam">Exam</option>
+    <option value="fee">Fee</option>
+    <option value="attendance">Attendance</option>
+  </select>
+
+  <select name="priority">
+    <option value="normal">Normal</option>
+    <option value="high">High</option>
+  </select>
+
+  <br><br>
+  <button type="submit">Send</button>
+</form>
+<a href="/admin-panel/" class="back-dashboard-btn">⬅ Back to Dashboard</a>
+
+</div>
+</div>
+
+<style>
+.notify-wrapper{
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin-top:40px;
+}
+
+.notify-card{
+  max-width: 520px !important;
+  width: 100% !important;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(16px);
+  border-radius:10px;
+  padding:30px;
+  box-shadow:0 25px 60px rgba(0,0,0,0.35);
+}
+
+.notify-card h2{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.notify-card input,
+.notify-card textarea,
+.notify-card select{
+  width:100%;
+  padding:10px;
+  margin-bottom:15px;
+  border-radius:10px;
+  border:none;
+}
+
+.notify-btn{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  background:linear-gradient(135deg,#6366f1,#8b5cf6);
+  color:white;
+  font-weight:600;
+}
+
+/* Gradient Border Glow */
+.notify-card::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:22px;
+  background:linear-gradient(45deg,#6366f1,#22d3ee,#a855f7,#f472b6);
+  z-index:-1;
+  filter:blur(10px);
+  opacity:0.6;
+}
+
+/* Input Glow Focus */
+.notify-card input:focus,
+.notify-card textarea:focus,
+.notify-card select:focus{
+  outline:none;
+  box-shadow:0 0 0 2px #8b5cf6, 0 0 12px #6366f1;
+  transform:scale(1.01);
+}
+
+/* Send Button Upgrade */
+.notify-btn{
+  background:linear-gradient(135deg,#6366f1,#8b5cf6,#ec4899);
+  box-shadow:0 8px 25px rgba(139,92,246,0.5);
+  transition:all 0.25s ease;
+}
+
+.notify-btn:hover{
+  transform:translateY(-2px) scale(1.02);
+  box-shadow:0 15px 35px rgba(139,92,246,0.8);
+}
+
+h2{
+  text-shadow:0 0 8px #8b5cf6;
+}
+
+.main {
+  flex: 1 !important;
+  width: 100% !important;
+}
+
+</style>
+
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="staff-header">
+<h2>🌱 NSS Officer Panel</h2>
+</div>
+
+<a href="{% url 'special_dashboard' %}" class="cs-btn">← Back</a>
+
+<a href="{% url 'nss_download' %}" class="btn btn-success mb-3">
+    Download PDF
+</a>
+
+<div class="staff-box mb-3">
+<a href="{% url 'nss_add' %}" class="cs-btn">➕ Add Participation</a>
+</div>
+
+<div class="staff-box">
+
+<table class="erp-table">
+
+<tr>
+<th>Student Name</th>
+<th>Department</th>
+<th>Year</th>
+<th>Action</th>
+</tr>
+
+{% for d in data %}
+<tr>
+<td>{{ d.student_name }}</td>
+<td>{{ d.department }}</td>
+<td>{{ d.year }}</td>
+<td>
+<a href="{% url 'nss_delete' d.id %}" class="cs-btn">
+Delete
+</a>
+</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}

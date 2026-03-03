@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <h2>📚 Library Admin Panel</h2>
+  <p>Book management and issues</p>
+</div>
+<div class="row mt-4">
+  <div class="col-md-4">
+    <a href="{% url 'manage_books' %}" class="card p-3">Manage Books</a>
+  </div>
+
+  <div class="col-md-4">
+    <a href="{% url 'issued_books' %}" class="card p-3">Issued Books</a>
+  </div>
+</div>
+<a href="/dashboard/" class="back-btn">⬅ Back</a>
+<style>
+  .back-btn {
+    display: inline-block;
+    margin-bottom: 15px;
+    padding: 8px 16px;
+    background: #334155;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .back-btn:hover {
+    background: #475569;
+  }
+
+  .btn{
+    background:#22c55e;
+    color:white;
+    padding:6px 12px;
+    border-radius:6px;
+    text-decoration:none;
+}
+
+</style>
+{% endblock %}

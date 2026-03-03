@@ -1,0 +1,30 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}CampSpark Control Panel{% endblock %}
+
+{% block branding %}
+<h1 style="color:#8b5cf6; font-weight:700;">
+  ⚡ CampSpark Control
+</h1>
+
+<a href="/admin-panel/" 
+   style="
+   margin-left:20px;
+   background:#6366f1;
+   color:white;
+   padding:6px 12px;
+   border-radius:8px;
+   text-decoration:none;
+   font-size:13px;">
+   ⬅ Back to Dashboard
+</a>
+<style>
+body{
+  background:#020617;
+}
+#header{
+  background:#0f172a;
+}
+</style>
+{% endblock %}

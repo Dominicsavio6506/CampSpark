@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>📊 My Exam Results</h2>
+
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% else %}
+
+<table border="1">
+<tr>
+<th>Subject</th>
+<th>Marks</th>
+<th>Grade</th>
+</tr>
+
+{% for m in marks %}
+<tr>
+<td>{{ m.subject }}</td>
+<td>{{ m.total }}</td>
+<td>{{ m.grade }}</td>
+</tr>
+{% endfor %}
+</table>
+
+{% endif %}
+
+{% endblock %}

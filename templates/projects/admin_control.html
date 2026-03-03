@@ -1,0 +1,68 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="container mt-3">
+  <button onclick="history.back()" class="btn btn-secondary mb-3">
+    ← Back
+  </button>
+
+  <h2 class="mb-3">Admin Project Control</h2>
+
+  <table class="table table-bordered table-striped table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>S.No</th>
+        <th>Student</th>
+        <th>Project</th>
+        <th>Department</th>
+        <th>Status</th>
+        <th>Progress</th>
+        <th>Archive</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for p in projects %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ p.created_by }}</td>
+        <td>{{ p.title }}</td>
+        <td>{{ p.department }}</td>
+
+        <td>
+          {% if p.status == "ONGOING" %}
+          <span class="badge bg-primary">Ongoing</span>
+          {% elif p.status == "COMPLETED" %}
+          <span class="badge bg-warning text-dark">Completed</span>
+          {% else %}
+          <span class="badge bg-secondary">Archived</span>
+          {% endif %}
+        </td>
+
+        <td>
+          <a
+            href="{% url 'project_detail' p.id %}"
+            class="btn btn-primary btn-sm"
+          >
+            Progress
+          </a>
+        </td>
+
+        <td>
+          {% if p.status != "ARCHIVE" %}
+          <a
+            href="{% url 'manual_archive' p.id %}"
+            class="btn btn-sm btn-danger"
+          >
+            Archive
+          </a>
+          {% else %}
+          <span class="badge bg-secondary">Archived</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

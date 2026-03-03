@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CampSpark — Smart Campus</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  font-family: Poppins;
+  background: radial-gradient(circle at top, #020617, #000);
+  color: white;
+  overflow-x: hidden;
+}
+
+.hero {
+  text-align: center;
+  padding: 120px 20px;
+}
+
+.hero h1 {
+  font-size: 52px;
+  font-weight: 800;
+  text-shadow: 0 0 25px cyan;
+}
+
+.hero p {
+  max-width: 700px;
+  margin: 20px auto;
+  opacity: 0.85;
+}
+
+.btn {
+  padding: 14px 28px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, cyan, blue);
+  border: none;
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  padding: 60px;
+}
+
+.card {
+  background: rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 25px;
+  backdrop-filter: blur(18px);
+  transition: 0.35s;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 25px cyan;
+}
+</style>
+</head>
+
+<body>
+
+<section class="hero">
+  <h1>⚡ CampSpark</h1>
+  <p>AI-powered Smart Campus Management Platform for Students, Faculty, and Administrators</p>
+
+  <a href="/login/">
+    <button class="btn">🚀 Enter CampSpark</button>
+  </a>
+</section>
+
+<section class="features">
+
+<div class="card">
+  <h3>🎓 Student Dashboard</h3>
+  <p>Attendance, marks, notes, fees, notifications and AI insights.</p>
+</div>
+
+<div class="card">
+  <h3>👨‍🏫 Staff Dashboard</h3>
+  <p>Marks control, attendance tracking, weak student AI, analytics.</p>
+</div>
+
+<div class="card">
+  <h3>🏛 Admin Control Panel</h3>
+  <p>User management, analytics, reports, and AI campus insights.</p>
+</div>
+
+<div class="card">
+  <h3>🤖 AI Smart Engine</h3>
+  <p>Weak student detection, performance prediction, attendance risk AI.</p>
+</div>
+
+<div class="card">
+  <h3>💰 Fee & Scholarship System</h3>
+  <p>Fee tracking, scholarship engine, installment support.</p>
+</div>
+
+<div class="card">
+  <h3>📱 Modern UI Experience</h3>
+  <p>Dark mode, animations, mobile-friendly, premium design.</p>
+</div>
+
+</section>
+
+</body>
+</html>

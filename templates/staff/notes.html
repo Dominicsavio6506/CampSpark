@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📝 Notes</h2>
+{% if notes %}
+<table class="erp-table">
+<tr><th>Subject</th></tr>
+{% for n in notes %}
+<tr>
+<td>{{ n.title }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<div class="empty-box">No Notes Available</div>
+{% endif %}
+<a href="/staff/" class="back-dashboard-btn">⬅ Back to Dashboard</a>
+{% endblock %}

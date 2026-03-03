@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Profile</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    font-family: "Segoe UI", system-ui;
+}
+
+.profile-header {
+    background: linear-gradient(135deg, #63bdf1,#81e797);
+    color: white;
+    border-radius: 22px;
+    padding: 30px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.profile-pic {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid white;
+}
+
+.section-card {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    padding: 22px;
+    margin-top: 20px;
+}
+
+/* NEW ADD */
+.label-text {
+    font-weight: 600;
+    color: #4f46e5;
+}
+
+.value-text {
+    color: #111827;
+}
+
+.back-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 12px 22px;
+    border-radius: 14px;
+    text-decoration: none;
+    background: linear-gradient(135deg,#63bdf1,#62dd7d);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    transition: 0.2s;
+}
+.back-btn:hover {
+    transform: translateY(-2px);
+}
+</style>
+
+</head>
+<body>
+
+<div class="container mt-4">
+
+<!-- HEADER -->
+<div class="profile-header row align-items-center mb-4">
+
+    <div class="col-md-3 text-center">
+        {% if student.photo %}
+            <img src="{{ student.photo.url }}" width="150">
+        {% else %}
+            <img src="/static/images/default-user.png" width="150">
+        {% endif %}
+    </div>
+
+    <div class="col-md-9">
+        <h3 class="mb-1">{{ student.name }}</h3>
+        <h6 class="opacity-75">{{ student.roll_number }}</h6>
+
+        <div class="row mt-2">
+            <div class="col-md-4">
+            <span class="label-text">Department :</span>
+            <span class="value-text">
+            {% if student.department_fk %}
+                {{ student.department_fk.name }}
+            {% else %}
+                {{ student.department }}
+            {% endif %}
+            </span>
+            </div>
+
+            <div class="col-md-4">
+              <span class="label-text">Year :</span>
+              <span class="value-text">{{ student.year }}</span>
+            </div>
+
+            <div class="col-md-4">
+              <span class="label-text">Email :</span>
+              <span class="value-text">{{ student.user.email }}</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- PERSONAL INFO -->
+<div class="section-card">
+<h5><i class="fa-solid fa-user"></i> Personal Information</h5>
+<hr>
+
+<div class="row g-3">
+<div class="col-md-4"><span class="label-text">Phone :</span> <span class="value-text">{{ student.phone }}</span></div>
+<div class="col-md-4"><span class="label-text">DOB :</span> <span class="value-text">{{ student.dob }}</span></div>
+<div class="col-md-4"><span class="label-text">Gender :</span> <span class="value-text">{{ student.gender }}</span></div>
+
+<div class="col-md-4"><span class="label-text">Blood Group :</span> <span class="value-text">{{ student.blood_group }}</span></div>
+<div class="col-md-4"><span class="label-text">Aadhaar :</span> <span class="value-text">{{ student.aadhaar_number }}</span></div>
+<div class="col-md-4"><span class="label-text">Community :</span> <span class="value-text">{{ student.community }}</span></div>
+
+<div class="col-md-4"><span class="label-text">Religion :</span> <span class="value-text">{{ student.religion }}</span></div>
+<div class="col-md-4"><span class="label-text">Nationality :</span> <span class="value-text">{{ student.nationality }}</span></div>
+<div class="col-md-4"><span class="label-text">Emergency Contact :</span> <span class="value-text">{{ student.emergency_contact }}</span></div>
+
+<div class="col-md-12"><span class="label-text">Address :</span> <span class="value-text">{{ student.address }}</span></div>
+</div>
+</div>
+
+<!-- FAMILY INFO -->
+<div class="section-card">
+<h5><i class="fa-solid fa-people-roof"></i> Family Information</h5>
+<hr>
+
+<div class="row g-3">
+<div class="col-md-4"><span class="label-text">Father Name :</span> <span class="value-text">{{ student.father_name }}</span></div>
+<div class="col-md-4"><span class="label-text">Parent Phone :</span> <span class="value-text">{{ student.parent_phone }}</span></div>
+<div class="col-md-4"><span class="label-text">Parent Occupation :</span> <span class="value-text">{{ student.parent_occupation }}</span></div>
+
+<div class="col-md-4"><span class="label-text">Annual Income :</span> <span class="value-text">{{ student.annual_income }}</span></div>
+<div class="col-md-4"><span class="label-text">Hostel Status :</span> <span class="value-text">{{ student.hostel_status }}</span></div>
+</div>
+</div>
+
+<!-- LINKS -->
+<div class="section-card">
+<h5><i class="fa-solid fa-link"></i> Online Profiles</h5>
+<hr>
+
+<div class="row g-3">
+<div class="col-md-6"><span class="label-text">LinkedIn :</span> <span class="value-text">{{ student.linkedin_profile }}</span></div>
+</div>
+</div>
+
+<!-- DOCUMENTS -->
+<div class="section-card">
+<h5><i class="fa-solid fa-file-lines"></i> Documents & Certificates</h5>
+<hr>
+
+<div class="row g-3">
+<div class="col-md-4"><span class="label-text">Profile Photo :</span> <span class="value-text">{{ student.photo }}</span></div>
+<div class="col-md-4"><span class="label-text">10th Certificate :</span> <span class="value-text">{{ student.certificate_10th }}</span></div>
+<div class="col-md-4"><span class="label-text">12th Certificate :</span> <span class="value-text">{{ student.certificate_12th }}</span></div>
+<div class="col-md-4"><span class="label-text">ID Proof :</span> <span class="value-text">{{ student.id_proof }}</span></div>
+</div>
+</div>
+
+<!-- BACK BUTTON -->
+<a href="/student/" class="back-btn">⬅ Back to Dashboard</a>
+
+</div>
+</body>
+</html>

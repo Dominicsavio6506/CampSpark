@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.search-bar {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-bar input,
+.search-bar select,
+.search-bar button {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #2a3b5f;
+  background: rgba(255,255,255,0.08);
+  color: white;
+  outline: none;
+  font-size: 14px;
+}
+
+.search-bar input::placeholder {
+  color: #b8c7e0;
+}
+
+.search-bar button {
+  background: #4da3ff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.search-bar button:hover {
+  background: #2f8cff;
+}
+.search-bar select {
+  color: #ffffff;
+  background: rgba(255,255,255,0.15);
+}
+
+.search-bar option {
+  color: black;
+}
+.back-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: linear-gradient(45deg, #4da3ff, #6f7bff);
+  color: white !important;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+@media (max-width:600px) {
+
+  .search-bar {
+    flex-direction: column;
+  }
+
+  .erp-table {
+    font-size: 13px;
+  }
+
+}
+
+</style>
+
+<form method="get" class="search-bar" onsubmit="showLoader()">
+  <input type="text" name="q" placeholder="Search name">
+
+  <select name="dept">
+    <option value="">Department</option>
+    <option value="Computer Science">CS</option>
+    <option value="Commerce">Commerce</option>
+  </select>
+
+  <select name="year">
+    <option value="">Year</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+  </select>
+
+  <button type="submit">Search</button>
+</form>
+<div id="loader" class="loader">Loading...</div>
+
+<h2>🎓 Students List</h2>
+{% if students %}
+<table class="erp-table">
+<tr><th>Name</th><th>Roll No</th></tr>
+{% for s in students %}
+<tr>
+<td>{{ s.name }}</td>
+<td>{{ s.roll_number }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<div class="empty-box">No Students Found</div>
+{% endif %}
+<a href="/staff/" class="back-btn">⬅ Back to Dashboard</a>
+
+{% endblock %}

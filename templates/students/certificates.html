@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Certificates</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    font-family: "Segoe UI", system-ui;
+}
+
+.cert-card {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    padding: 18px;
+    transition: 0.2s ease;
+}
+
+.cert-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.12);
+}
+
+.cert-icon {
+    font-size: 38px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container mt-4">
+
+<h3 class="mb-4">
+<i class="fa-solid fa-folder-open text-primary"></i>
+Certificates Panel
+</h3>
+
+<div class="row g-4">
+
+<!-- CERTIFICATE CARD TEMPLATE -->
+{% for label, file in [
+("10th Certificate", student.certificate_10th),
+("12th Certificate", student.certificate_12th),
+("Degree Certificate", student.certificate_degree),
+("Community Certificate", student.community_certificate),
+("Income Certificate", student.income_certificate),
+("ID Proof", student.id_proof)
+] %}
+
+<div class="col-md-4">
+    <div class="cert-card text-center">
+
+        <div class="cert-icon text-primary mb-2">
+            <i class="fa-solid fa-file-pdf"></i>
+        </div>
+
+        <h6>{{ label }}</h6>
+
+        {% if file %}
+            <span class="badge bg-success mb-2">Uploaded</span>
+
+            <div class="mt-2">
+                <a href="{{ file.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                    View
+                </a>
+                <a href="{{ file.url }}" download class="btn btn-sm btn-outline-secondary">
+                    Download
+                </a>
+            </div>
+
+        {% else %}
+            <span class="badge bg-danger mb-2">Missing</span>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endfor %}
+
+</div>
+
+<div class="mt-4">
+    <a href="/student/profile/" class="btn btn-outline-secondary">
+        Back to Profile
+    </a>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CampSpark AI Assistant ⚡</title>
+    <style>
+      /* 🖤 Base layout */
+      body {
+        font-family: "Poppins", sans-serif;
+        background: radial-gradient(
+          circle at top left,
+          #0f2027,
+          #203a43,
+          #2c5364
+        );
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      /* 🌟 Header */
+      header {
+        text-align: center;
+        margin-top: 20px;
+      }
+      header h1 {
+        font-size: 2rem;
+        color: #00ffff;
+        text-shadow: 0 0 10px #00ffff;
+      }
+
+      /* 💬 Chat container */
+      #chat-box {
+        width: 85%;
+        max-width: 900px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid #00ffff40;
+        border-radius: 15px;
+        padding: 20px;
+        overflow-y: auto;
+        flex-grow: 1;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        backdrop-filter: blur(10px);
+        margin: 20px 0;
+      }
+
+      /* 🗨️ Message bubbles */
+      .msg {
+        margin: 12px 0;
+        padding: 10px 16px;
+        border-radius: 15px;
+        max-width: 75%;
+        animation: fadeIn 0.4s ease-in;
+      }
+
+      .user {
+        background: linear-gradient(135deg, #00bcd4, #2196f3);
+        align-self: flex-end;
+        margin-left: auto;
+        border-top-right-radius: 0;
+      }
+
+      .ai {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid #00ffff60;
+        margin-right: auto;
+        border-top-left-radius: 0;
+      }
+
+      /* ✨ Typing animation */
+      #typing {
+        color: #00ffff;
+        font-style: italic;
+        display: none;
+        margin-top: 10px;
+        animation: blink 1s infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+
+      /* 🔤 Input area */
+      #message-box {
+        width: 85%;
+        max-width: 900px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      input {
+        flex: 1;
+        padding: 14px;
+        border: none;
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        outline: none;
+        font-size: 1rem;
+      }
+
+      button {
+        padding: 14px 24px;
+        margin-left: 10px;
+        border: none;
+        background: linear-gradient(135deg, #00ffff, #2196f3);
+        color: #000;
+        font-weight: bold;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px #00ffff;
+      }
+
+      /* 🌀 Animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Avoid tight lines */
+      .msg.ai {
+        line-height: 1.6;
+        white-space: pre-wrap;
+      }
+      .cursor {
+        display: inline-block;
+        animation: blink 1s infinite;
+        color: #00ffff;
+      }
+
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .msg.ai {
+        line-height: 1.6;
+        white-space: pre-wrap;
+        margin-bottom: 8px;
+      }
+
+      .msg.ai b {
+        color: #00ffff;
+      }
+
+      .msg.ai br {
+        margin-bottom: 5px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>⚡ CampSpark AI Assistant</h1>
+    </header>
+
+    <!-- 🔙 Back Button -->
+    <div style="width: 85%; max-width: 900px; margin-top: 15px">
+      <button
+        onclick="goBack()"
+        style="
+          background: #00ffff;
+          color: black;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 20px;
+          cursor: pointer;
+          font-weight: bold;
+        "
+      >
+        ⬅ Back
+      </button>
+    </div>
+
+    <div id="chat-box"></div>
+    <div id="typing">AI is typing...</div>
+
+    <div id="message-box">
+      <input
+        type="text"
+        id="message"
+        placeholder="Type your message..."
+        onkeypress="handleKey(event)"
+      />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+      let chatHistory = [];
+
+      async function sendMessage() {
+        const msgInput = document.getElementById("message");
+        const msg = msgInput.value.trim();
+        if (!msg) return;
+
+        const chatBox = document.getElementById("chat-box");
+
+        chatBox.innerHTML += `<div class='msg user'>${msg}</div>`;
+        msgInput.value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        document.getElementById("typing").style.display = "block";
+
+        try {
+          const res = await fetch("/ai/chat/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              message: msg,
+              history: chatHistory.slice(-5),
+            }),
+          });
+
+          const data = await res.json();
+
+          chatHistory.push({ role: "user", content: msg });
+          chatHistory.push({ role: "assistant", content: data.reply });
+
+          document.getElementById("typing").style.display = "none";
+
+          // Markdown Formatting
+          let formatted = data.reply
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+            .replace(/\*(.*?)\*/g, "<i>$1</i>")
+            .replace(/^## (.*$)/gm, "<h4>$1</h4>")
+            .replace(/^# (.*$)/gm, "<h3>$1</h3>")
+            .replace(/\n/g, "<br>");
+
+          let aiDiv = document.createElement("div");
+          aiDiv.classList.add("msg", "ai");
+          chatBox.appendChild(aiDiv);
+
+          let i = 0;
+
+          function typeText() {
+            if (i < formatted.length) {
+              aiDiv.innerHTML =
+                formatted.slice(0, i) + "<span class='cursor'>|</span>";
+              i++;
+              chatBox.scrollTop = chatBox.scrollHeight;
+              setTimeout(typeText, 5);
+            } else {
+              aiDiv.innerHTML = formatted;
+            }
+          }
+
+          typeText();
+        } catch (e) {
+          document.getElementById("typing").style.display = "none";
+          chatBox.innerHTML += `<div class='msg ai'>⚠️ Error: Cannot connect to AI</div>`;
+        }
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function handleKey(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          sendMessage();
+        }
+      }
+
+      function goBack() {
+        window.history.back();
+      }
+    </script>
+  </body>
+</html>

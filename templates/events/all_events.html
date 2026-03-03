@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.events-wrapper{
+    max-width: 900px;
+}
+
+.section-title{
+    font-size: 28px;
+    font-weight: 700;
+    color:#a78bfa;
+    margin-bottom:20px;
+}
+
+.sub-title{
+    font-size:20px;
+    font-weight:700;
+    margin:25px 0 15px;
+    color:white;
+}
+
+.event-card{
+    background: linear-gradient(145deg,#0f172a,#111827);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+}
+
+.event-title{
+    font-size:24px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.event-meta{
+    color:#cbd5e1;
+    margin-bottom:12px;
+}
+
+.status-upcoming{
+    color:#22c55e;
+    font-weight:700;
+}
+
+.status-past{
+    color:#94a3b8;
+    font-weight:700;
+}
+
+.view-btn{
+    display:inline-block;
+    padding:10px 16px;
+    border-radius:10px;
+    background:#7c3aed;
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.view-btn:hover{
+    opacity:0.9;
+}
+</style>
+
+<div class="events-wrapper">
+
+<h2 class="section-title">📅 All Events</h2>
+
+<h3 class="sub-title">Upcoming Events</h3>
+
+{% for event in upcoming %}
+<div class="event-card">
+
+  <div class="event-title">{{ event.title }}</div>
+
+  <div class="event-meta">
+      {{ event.type }} | {{ event.date }}
+      <span class="status-upcoming"> ● Upcoming</span>
+  </div>
+
+  <a class="view-btn" href="{% url 'event_detail' event.id %}">
+    View Details
+  </a>
+
+</div>
+{% empty %}
+<p style="color:#94a3b8;">No upcoming events</p>
+{% endfor %}
+
+
+<h3 class="sub-title">Past Events</h3>
+
+{% for event in past %}
+<div class="event-card">
+    <div class="event-title">{{ event.title }}</div>
+    <span class="status-past">● Completed</span>
+</div>
+{% empty %}
+<p style="color:#94a3b8;">No past events</p>
+{% endfor %}
+
+</div>
+
+{% endblock %}

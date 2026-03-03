@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="fade-in" style="padding:30px">
+<div class="staff-header">
+  <h2>👨‍🏫 Welcome, {{ staff.name }}</h2>
+  <p>Staff Control Panel · CampSpark ERP</p>
+</div>
+
+
+<!-- TOP CARDS GRID -->
+<div class="staff-grid">
+
+  <div class="glass card staff-box">
+    <h3>🤖 AI Insight</h3>
+    <p>{{ ai_message }}</p>
+    <a href="/staff/ai/" class="btn">View Full AI Report</a>
+  </div>
+
+  <div class="glass card staff-box">
+    <h3>🎓 Students ({{ students|length }})</h3>
+    <a href="/staff/students/" class="btn">View All Students</a>
+  </div>
+
+  <div class="glass card staff-box">
+    <h3>🧾 Marks</h3>
+    <a href="/staff/marks/" class="btn">View Marks</a>
+  </div>
+
+  <div class="glass card staff-box">
+    <h3>📝 Notes</h3>
+    <a href="/staff/notes/" class="btn">View Notes</a>
+  </div>
+
+</div>
+<!-- END GRID -->
+
+<h3 class="doc-title">📊 Reports</h3>
+
+<div class="doc-section">
+    <div class="doc-grid">
+
+        <a href="/reports/marks-pdf/" class="doc-btn">
+            📝 Marks Report
+        </a>
+
+        <a href="/reports/attendance-full/" class="doc-btn">
+            📅 Attendance Report
+        </a>
+
+    </div>
+</div>
+
+<div class="chart-box">
+  <h3>📈 Performance Chart</h3>
+  <canvas id="staffChart"></canvas>
+</div>
+
+</div>
+<canvas id="staffChart" class="staff-chart"></canvas>
+
+<script>
+
+new Chart(document.getElementById("staffChart"), {
+  type: "line",
+  data: {
+    labels: ["Weak", "Average", "Strong"],
+    datasets: [{
+      label: "Performance",
+      data: [
+        {{ weak_students|length }},
+        {{ avg_students|length }},
+        {{ strong_students|length }}
+      ]
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false  
+  }
+});
+
+</script>
+
+{% endblock %}

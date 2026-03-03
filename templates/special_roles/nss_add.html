@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="staff-header">
+<h2>➕ Add NSS Participation</h2>
+</div>
+
+<a href="{% url 'nss_panel' %}" class="cs-btn">← Back</a>
+
+<form method="post" class="staff-box">
+{% csrf_token %}
+
+<label>Student Name</label>
+<input name="student_name" class="form-control mb-2">
+
+<label>Department</label>
+<input name="department" class="form-control mb-2">
+
+<label>Year</label>
+<input name="year" class="form-control mb-3">
+
+<button class="cs-btn">Save</button>
+
+</form>
+
+{% endblock %}

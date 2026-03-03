@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>📅 Class Timetable</h2>
+
+<table border="1">
+<tr>
+<th>Day</th>
+<th>Subject</th>
+<th>Faculty</th>
+<th>Time</th>
+</tr>
+
+{% for t in timetable %}
+<tr>
+<td>{{ t.day }}</td>
+<td>{{ t.subject }}</td>
+<td>{{ t.faculty }}</td>
+<td>{{ t.time }}</td>
+</tr>
+{% empty %}
+<tr><td colspan="4">No timetable added yet</td></tr>
+{% endfor %}
+</table>
+<a href="/staff/" style="color:#00ffff;">⬅ Back to Dashboard</a>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>🧾 Marks List</h2>
+{% if marks %}
+<div class="marks-wrapper"></div>
+<div style="width:100%;"></div>
+<table class="erp-table">
+<tr>
+<th>Name</th>
+<th>Internal</th>
+<th>Semester</th>
+<th>Total</th>
+</tr>
+{% for m in marks %}
+<tr>
+<td>{{ m.student.name }}</td>
+<td>{{ m.internal_mark }}</td>
+<td>{{ m.semester_mark }}</td>
+<td>{{ m.total }}</td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<div class="empty-box">No Marks Available</div>
+{% endif %}
+<a href="/staff/" class="back-dashboard-btn">⬅ Back to Dashboard</a>
+{% endblock %}
+ 

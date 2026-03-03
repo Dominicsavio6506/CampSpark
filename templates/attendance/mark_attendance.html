@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="padding:30px">
+
+<h2>📋 Mark Attendance</h2>
+
+<form method="POST">
+{% csrf_token %}
+
+<table border="1" cellpadding="8">
+<tr>
+  <th>Student Name</th>
+  <th>Present</th>
+</tr>
+
+{% for student in students %}
+<tr>
+  <td>{{ student.name }}</td>
+  <td>
+    <input type="checkbox" name="{{ student.id }}">
+  </td>
+</tr>
+{% endfor %}
+
+</table>
+
+<br>
+<button type="submit">✅ Save Attendance</button>
+
+</form>
+
+</div>
+
+{% endblock %}

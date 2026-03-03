@@ -1,0 +1,5 @@
+<h3>Complaints List</h3>
+
+{% for c in data %}
+  <p>{{ c.category }} - {{ c.status }}</p>
+{% endfor %}

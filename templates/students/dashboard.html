@@ -1,0 +1,459 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="student-dashboard">
+<style>
+.dashboard-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.dashboard-page {
+  width: 100%;
+  max-width: 1000px;
+  background: linear-gradient(135deg, #e0e7ff, #f8fafc);
+  border-radius: 24px;
+  padding: 30px;
+  margin-top: 20px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+}
+ 
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #6366f1, #9333ea);
+  color: white;
+  padding: 32px;
+  border-radius: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+/* CARDS */
+.card-glass {
+  background: linear-gradient(145deg, #ffffff, #f1f5f9);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  border: 1px solid #e2e8f0;
+}
+
+
+.stat-title {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #111827;
+}
+
+.badge-grade {
+  background: #6366f1;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 10px;
+}
+
+.notification {
+  border-left: 4px solid #6366f1;
+  padding-left: 12px;
+  margin-bottom: 12px;
+}
+
+.muted {
+  color: #6b7280;
+}
+
+/* TIMETABLE BUTTON */
+.btn-timetable {
+  display: inline-block;
+  margin: 10px 0 25px;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, #6366f1, #9333ea);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(99,102,241,0.35);
+}
+.btn-timetable:hover {
+  transform: translateY(-2px);
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+table {
+  color: #111827 !important;
+}
+
+thead th {
+  background: #e5e7eb !important;
+  color: #111827 !important;
+}
+
+tbody td {
+  color: #111827 !important;
+}
+
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #4f46e5;
+}
+.card-glass:hover {
+  transform: translateY(-4px);
+  transition: 0.2s;
+}
+.hero {
+  box-shadow: 0 25px 60px rgba(99,102,241,0.35);
+}
+
+.cert-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.cert-box {
+  background: linear-gradient(135deg, #f7f7ff, #bff0f3);
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #111; 
+}
+.ok { color: rgba(11, 189, 11, 0.801); }
+.no { color: red; }
+.cert-link {
+  text-decoration: none;
+}
+.cert-link:hover .cert-box {
+  background: #c7e9ec;
+  cursor: pointer;
+}
+
+.doc-section {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+}
+
+.doc-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: nowrap;   /* important */
+    align-items: center;
+}
+
+.doc-btn {
+    text-decoration: none;
+    padding: 12px 18px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    background: linear-gradient(135deg, #6a5af9, #8b5cf6);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.doc-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);}
+
+.doc-title {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    font-weight: 800;
+    font-size: 18px;
+    text-shadow: 0 3px 8px rgba(0,0,0,0.5);
+    background: #ffffff;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap: 20px;
+}
+.card:hover {
+  transform: translateY(-5px);
+  transition: 0.3s;
+}
+.badge {
+  background: #22c55e;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+.desc {
+  font-size: 13px;
+  color: #667;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+</style>
+
+<div class="dashboard-wrapper">
+<div class="dashboard-page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h2>Welcome, {{ student.name }}</h2>
+    <p>Student Dashboard · CampSpark</p>
+  </div>
+
+  <h3 class="doc-title">⚡ Quick Actions</h3>
+
+  <div class="doc-grid">
+    <a href="/student/profile/" class="doc-btn">👤 My Profile</a>
+    <a href="/reports/semester-result/{{request.user.student.id}}/" class="doc-btn">📄 Result</a>
+    <a href="/reports/fee-certificate/{{request.user.student.id}}/" class="doc-btn">💰 Fee</a>
+  </div>
+
+  <a href="/academics/student/timetable/" class="btn-timetable">
+    📅 View My Timetable
+  </a>
+
+  <!-- STATS -->
+  <div class="grid">
+    <div class="card-glass card-blue text-center">
+      <div class="stat-title">Attendance</div>
+      <div class="stat-value">{{ attendance_percent }}%</div>
+    </div>
+
+    <div class="card-glass card-green text-center">
+      <div class="stat-title">Fees Due</div>
+      <div class="stat-value">₹{{ total_due }}</div>
+    </div>
+
+    <div class="card-glass card-purple text-center">
+      <div class="stat-title">GPA</div>
+      <div class="stat-value">{{ gpa }}</div>
+    </div>
+
+    <div class="card-glass card-orange text-center">
+      <div class="stat-title">CGPA</div>
+      <div class="stat-value">{{ cgpa }}</div>
+    </div>
+  </div>
+
+  <!-- RANK + SCHOLARSHIP -->
+  <div class="grid" style="margin-top:20px;">
+    <div class="card-glass card-purple text-center">
+      <div class="stat-title">Class Rank</div>
+      {% if rank %}
+        <div class="stat-value">#{{ rank }}</div>
+      {% else %}
+        <div class="muted">Not ranked</div>
+      {% endif %}
+    </div>
+
+    <div class="card-glass card-green text-center">
+      <div class="stat-title">Scholarship</div>
+      <div class="stat-value">₹{{ total_scholarship }}</div>
+    </div>
+  </div>
+
+  <div class="doc-section">
+      <h3 class="doc-title">📄 My Documents</h3>
+      <div class="doc-grid">
+
+          <a href="/reports/semester-result/{{ request.user.student.id }}/" class="doc-btn">
+            🎓 Semester Result
+          </a>
+
+          <a href="/reports/bonafide/{{ request.user.student.id }}/" class="doc-btn">
+            🧾 Bonafide Certificate
+          </a>
+
+          <a href="/reports/fee-certificate/{{ request.user.student.id }}/" class="doc-btn">
+            💰 Fee Paid Certificate
+          </a>
+
+      </div>
+  </div>
+
+  <!-- MARKS -->
+  <div class="card-glass card-purple" style="margin-top:25px;">
+    <div class="section-title">📘 Academic Performance</div>
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Score</th>
+          <th>Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in marks %}
+        <tr>
+          <td>{{ m.subject }}</td>
+          <td>{{ m.total }}</td>
+          <td><span class="badge-grade">{{ m.grade }}</span></td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3" class="muted text-center">No marks uploaded yet</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+   <!-- Time table -->
+  <div class="card-glass card-blue" style="margin-top:25px;">
+    <div class="section-title">📅 Today Timetable</div>
+
+    <table class="table">
+      <tr>
+        <th>Period</th>
+        <th>Subject</th>
+      </tr>
+
+      {% for t in today_timetable %}
+      <tr>
+        <td>{{ t.timeslot.slot_name }}</td>
+        <td>{{ t.subject }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="2">Free Day</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+<div class="cert-grid">
+
+{% if student.certificate_10th %}
+<a href="{{ student.certificate_10th.url }}" target="_blank" class="cert-link">
+  <div class="cert-box">
+    10th Certificate : <span class="ok">✔ Uploaded</span>
+  </div>
+</a>
+{% else %}
+<div class="cert-box">
+  10th Certificate : <span class="no">✖ Missing</span>
+</div>
+{% endif %}
+
+
+{% if student.certificate_12th %}
+<a href="{{ student.certificate_12th.url }}" target="_blank" class="cert-link">
+  <div class="cert-box">
+    12th Certificate : <span class="ok">✔ Uploaded</span>
+  </div>
+</a>
+{% else %}
+<div class="cert-box">
+  12th Certificate : <span class="no">✖ Missing</span>
+</div>
+{% endif %}
+
+
+{% if student.certificate_degree %}
+<a href="{{ student.certificate_degree.url }}" target="_blank" class="cert-link">
+  <div class="cert-box">
+    Degree Certificate : <span class="ok">✔ Uploaded</span>
+  </div>
+</a>
+{% else %}
+<div class="cert-box">
+  Degree Certificate : <span class="no">✖ Missing</span>
+</div>
+{% endif %}
+
+
+{% if student.community_certificate %}
+<a href="{{ student.community_certificate.url }}" target="_blank" class="cert-link">
+  <div class="cert-box">
+    Community  : <span class="ok">✔ Uploaded</span>
+  </div>
+</a>
+{% else %}
+<div class="cert-box">
+  Community  : <span class="no">✖ Missing</span>
+</div>
+{% endif %}
+
+{% if student.income_certificate %}
+<a href="{{ student.income_certificate.url }}" target="_blank" class="cert-link">
+  <div class="cert-box">
+    Income Certificate : <span class="ok">✔ Uploaded</span>
+  </div>
+</a>
+{% else %}
+<div class="cert-box">
+  Income Certificate : <span class="no">✖ Missing</span>
+</div>
+{% endif %}
+
+
+{% if student.id_proof %}
+<a href="{{ student.id_proof.url }}" target="_blank" class="cert-link">
+  <div class="cert-box">
+    ID Proof : <span class="ok">✔ Uploaded</span>
+  </div>
+</a>
+{% else %}
+<div class="cert-box">
+  ID Proof : <span class="no">✖ Missing</span>
+</div>
+{% endif %}
+
+<a href="/complaints/form/" 
+   style="background:orange;padding:10px;border-radius:5px;color:white;text-decoration:none;">
+   Raise Complaint
+</a>
+<p class="desc">
+  Use this form to report any academic, infrastructure, or campus-related issues. <br>
+  Your complaint will be reviewed by the administration and .
+</p>
+</div>
+  <!-- NOTIFICATIONS -->
+  <div class="card-glass card-orange" style="margin-top:25px;">
+    <div class="section-title">🔔 Recent Notifications</div>
+
+    {% for n in notifications %}
+      <div class="notification">
+        <strong>{{ n.notification.title }}</strong>
+        <div class="muted">{{ n.notification.message }}</div>
+      </div>
+    {% empty %}
+      <p class="muted">No notifications</p>
+    {% endfor %}
+  </div>
+
+</div>
+
+</div>
+</div>
+
+{% endblock %}

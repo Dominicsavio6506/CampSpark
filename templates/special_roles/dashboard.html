@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="staff-header">
+  <h2>⚡ Special Role Dashboard</h2>
+  <p>Quick access to your assigned role panel</p>
+</div>
+
+<div class="staff-grid">
+
+{% if request.special_role == "LIB" %}
+<div class="staff-box">
+  <h3>📚 Library Panel</h3>
+  <p>Book & issue management</p>
+  <a class="cs-btn" href="{% url 'library_panel' %}">Open Panel</a>
+</div>
+{% endif %}
+
+{% if request.special_role == "DISC" %}
+<div class="staff-box">
+  <h3>🛡 Discipline Panel</h3>
+  <p>Student discipline records</p>
+  <a class="cs-btn" href="{% url 'discipline_panel' %}">Open Panel</a>
+</div>
+{% endif %}
+
+{% if request.special_role == "NSS" %}
+<div class="staff-box">
+  <h3>🧭 NSS Panel</h3>
+  <p>Events & volunteers</p>
+  <a class="cs-btn" href="{% url 'nss_panel' %}">Open Panel</a>
+</div>
+{% endif %}
+
+{% if request.special_role == "COMP" %}
+<div class="staff-box">
+  <h3>📢 Complaint Committee</h3>
+  <p>Review student complaints</p>
+  <a class="cs-btn" href="{% url 'view_complaints' %}">Open Panel</a>
+</div>
+{% endif %}
+
+</div>
+
+{% endblock %}

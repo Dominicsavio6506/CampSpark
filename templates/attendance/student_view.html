@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div style="padding:30px">
+
+<h2>📊 Attendance Report — {{ student.name }}</h2>
+
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% else %}
+
+<p>Total Days: {{ total }}</p>
+<p>Present Days: {{ present }}</p>
+<p>Attendance %: {{ percent }}%</p>
+
+<table border="1">
+<tr>
+  <th>Date</th>
+  <th>Status</th>
+</tr>
+
+{% for r in records %}
+<tr>
+  <td>{{ r.attendance.date }}</td>
+  <td>{% if r.present %}Present{% else %}Absent{% endif %}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endif %}
+
+</div>
+{% endblock %}

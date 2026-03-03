@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="container mt-3">
+  <button onclick="history.back()" class="btn btn-secondary mb-3">
+    ← Back
+  </button>
+
+  <h2>Create Project</h2>
+
+  <form
+    method="POST"
+    class="p-3 rounded"
+    style="background: #0f172a; max-width: 650px"
+  >
+    {% csrf_token %} {{ form.as_p }}
+
+    <button type="submit" class="cs-btn">Save Project</button>
+  </form>
+</div>
+
+{% endblock %}

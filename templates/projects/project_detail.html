@@ -1,0 +1,103 @@
+{% extends "base.html" %} {% block content %}
+
+<h2>{{ project.title }}</h2>
+
+<p><b>Team:</b> {{ project.team_name }}</p>
+<p><b>Guide:</b> {{ project.guide_staff }}</p>
+<p><b>Edit Count:</b> {{ project.edit_count }}</p>
+
+<a href="{% url 'edit_project' project.id %}" class="btn btn-warning mb-3">
+  ✏ Edit Project
+</a>
+
+<h3>Team Members</h3>
+
+<table class="table table-bordered table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th>Name</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for m in members %}
+    <tr>
+      <td>{{ m.student }} {% if m.is_leader %} 👑 Leader {% endif %}</td>
+
+      <td>
+        {% if not m.is_leader %}
+        <a href="{% url 'remove_member' m.id %}" class="btn btn-sm btn-danger">
+          Remove
+        </a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h4>Add Member</h4>
+
+{% if students %}
+<form method="POST">
+  {% csrf_token %}
+
+  <select name="student" class="form-select mb-3" required>
+    <option value="" selected disabled>-- Select Student --</option>
+
+    {% for s in students %}
+    <option value="{{ s.id }}">{{ s }}</option>
+    {% endfor %}
+  </select>
+
+  <button type="submit" class="btn btn-success">+ Add Member</button>
+</form>
+{% else %}
+<div class="alert alert-info">
+  All students are already assigned to projects.
+</div>
+{% endif %}
+
+<h3>Progress Updates</h3>
+
+<ul>
+  {% for p in progress %}
+  <li>
+    {{ p.get_step_name_display }} - {{ p.updated_at }} {% if p.description %}
+    <br />
+    <small style="color: #9ca3af"> 📝 {{ p.description }} </small>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>
+
+<!-- 👇 ADD HERE -->
+{% if request.user.is_staff or request.user.is_superuser %}
+
+<form method="POST" action="{% url 'add_progress' project.id %}" class="mt-3">
+  {% csrf_token %}
+
+  <select name="step_name" class="form-select mb-2" required>
+    <option value="" selected disabled>-- Select Progress Step --</option>
+    <option value="IDEA">Idea Submitted</option>
+    <option value="PROPOSAL">Proposal Approved</option>
+    <option value="PHASE1">Phase 1 Complete</option>
+    <option value="PHASE2">Phase 2 Complete</option>
+    <option value="FINAL">Final Submission</option>
+  </select>
+
+  <textarea
+    name="description"
+    class="form-control mb-2"
+    placeholder="Optional note"
+  ></textarea>
+
+  <button type="submit" class="btn btn-primary">+ Add Progress</button>
+</form>
+
+{% endif %}
+
+<a href="javascript:history.back()" class="btn btn-secondary mt-3"> ← Back </a>
+
+{% endblock %}

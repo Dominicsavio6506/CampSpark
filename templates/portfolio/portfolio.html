@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Portfolio</title>
+    <style>
+        body { font-family: Arial; background: #f5f7fb; padding: 40px; }
+        .card { background: white; padding: 25px; border-radius: 10px; max-width: 800px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        .section { margin-top: 20px; }
+        .badge { display: inline-block; background: #e3e7ff; padding: 6px 12px; border-radius: 20px; margin: 4px; }
+        a.button { display: inline-block; margin-top: 20px; padding: 10px 20px; background: #4f46e5; color: white; text-decoration: none; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    {% if profile %}
+        <h1>{{ profile.name }}</h1>
+        <p><strong>{{ profile.role }}</strong></p>
+        <p>{{ profile.bio }}</p>
+
+        <div class="section">
+            <h3>Skills</h3>
+            {% for skill in profile.skills.splitlines %}
+                <span class="badge">{{ skill }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="section">
+            <h3>Projects</h3>
+            <pre>{{ profile.projects }}</pre>
+        </div>
+
+        {% if profile.resume %}
+            <a class="button" href="{{ profile.resume.url }}" download>Download Resume</a>
+        {% endif %}
+    {% else %}
+        <h2>No portfolio data yet</h2>
+    {% endif %}
+</div>
+
+</body>
+</html>

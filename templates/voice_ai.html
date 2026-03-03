@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CampSpark Voice Assistant</title>
+    <meta charset="UTF-8">
+</head>
+<body style="font-family: Arial; text-align:center; padding-top:40px; background:#0f172a; color:white;">
+
+    <h2>🎙 CampSpark Voice Assistant</h2>
+
+    <button onclick="startListening()" style="
+        padding:12px 25px;
+        font-size:18px;
+        border-radius:10px;
+        cursor:pointer;
+        background:#2563eb;
+        color:white;
+        border:none;">
+        🎤 Speak
+    </button>
+
+    <p id="voiceText" style="margin-top:20px; font-size:16px;"></p>
+    <p id="aiReply" style="margin-top:10px; font-weight:bold;"></p>
+
+<script>
+let recognition;
+
+function initVoice() {
+    try {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+
+        recognition.lang = "en-IN";
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onstart = () => {
+            document.getElementById("voiceText").innerText = "🎧 Listening...";
+        };
+
+        recognition.onresult = (event) => {
+            const text = event.results[0][0].transcript;
+            document.getElementById("voiceText").innerText = "🗣 You said: " + text;
+            sendVoice(text);
+        };
+
+        recognition.onerror = (event) => {
+            alert("⚠ Voice error: " + event.error);
+        };
+
+    } catch (e) {
+        alert("⚠ Voice recognition not supported in this browser.");
+    }
+}
+
+function startListening() {
+    if (!recognition) initVoice();
+    recognition.start();
+}
+
+function sendVoice(text) {
+    fetch(`/ai/voice-api/?command=${encodeURIComponent(text)}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.reply) {
+                document.getElementById("aiReply").innerText = "🤖 AI: " + data.reply;
+                // Voice optional
+                // speak(data.reply);
+            } else {
+                document.getElementById("aiReply").innerText = "⚠ No reply from AI";
+            }
+        })
+        .catch(() => {
+            alert("⚠ Voice API error");
+        });
+}
+
+function speak(text) {
+    speechSynthesis.cancel();
+
+    let msg = new SpeechSynthesisUtterance(text);
+    msg.rate = 0.95;
+    msg.pitch = 1;
+    msg.volume = 1;
+
+    speechSynthesis.speak(msg);
+}
+</script>
+
+</body>
+</html>

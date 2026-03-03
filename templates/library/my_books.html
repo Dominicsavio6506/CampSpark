@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load tz %}
+{% block content %}
+
+<h2>My Books</h2>
+
+{% for r in records %}
+<p>
+    {{ r.book.title }} - 
+    {{ r.due_date|localtime|date:"d M Y, h:i A" }}
+</p>
+{% endfor %}
+
+{% endblock %}
