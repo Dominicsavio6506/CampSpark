@@ -35,10 +35,11 @@ INSTALLED_APPS = [
 
 'camp_staff',
 'adminpanel',
-'camp_notifications',
-'camp_fees',
+'notifications.apps.NotificationsConfig',   # 👈 ADD THIS
+'fees',
 'marks',
 'notes',
+'camp_fees',
 'attendance',
 'ai_assistant',
 'accounts',
