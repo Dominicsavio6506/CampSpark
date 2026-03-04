@@ -13,9 +13,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = False
-ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1']
 
-CSRF_TRUSTED_ORIGINS = ['https://*.railway.app']
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.railway.app",
+    "http://127.0.0.1:8000"
+]
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
@@ -62,17 +65,20 @@ INSTALLED_APPS = [
 
 # MIDDLEWARE
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'special_roles.middleware.SpecialRoleMiddleware',
-
 ]
-
 
 # URL CONFIG
 ROOT_URLCONF = 'campspark.urls'
@@ -154,11 +160,6 @@ LOGOUT_REDIRECT_URL = '/login/'
 
 # SESSION FIX (IMPORTANT)
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
-
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:8000"
-]
 
 CORS_ALLOW_ALL_ORIGINS = True
 APPEND_SLASH = False
