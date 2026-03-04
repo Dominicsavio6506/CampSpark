@@ -26,7 +26,6 @@ httpcore==1.0.9
 httplib2==0.31.1
 httpx==0.28.1
 idna==3.11
-mysqlclient @ file:///C:/Users/acer/Downloads/mysqlclient-2.2.7-cp311-cp311-win_amd64.whl#sha256=a22d99d26baf4af68ebef430e3131bb5a9b722b79a9fcfac6d9bbf8a88800687
 openpyxl==3.1.5
 packaging==26.0
 pillow==12.1.0
