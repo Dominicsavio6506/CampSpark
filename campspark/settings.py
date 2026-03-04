@@ -15,6 +15,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = False
 ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
+CSRF_TRUSTED_ORIGINS = ['https://*.railway.app']
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
