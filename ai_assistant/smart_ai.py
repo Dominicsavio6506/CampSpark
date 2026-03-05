@@ -2,9 +2,10 @@ import requests
 import os
 from groq import Groq
 
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
 def get_groq_client():
-    api_key = os.environ.get("GROQ_API_KEY")
-    return Groq(api_key=api_key)
+    return Groq(api_key=GROQ_API_KEY)
 
 SYSTEM_PROMPT = """
 You are CampSpark AI — advanced College ERP assistant.
