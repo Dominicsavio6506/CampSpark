@@ -3,10 +3,13 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from .models import Student, Department
 
+
 @receiver(post_save, sender=User)
 def create_student_for_user(sender, instance, created, **kwargs):
-    # Do NOT create Student for admin/superuser
+
+    # skip admin accounts
     if created and not instance.is_superuser:
+
         dept = Department.objects.first()
 
         Student.objects.create(
@@ -14,5 +17,6 @@ def create_student_for_user(sender, instance, created, **kwargs):
             name=instance.username,
             roll_number=f"AUTO-{instance.id}",
             year=1,
-            department=dept
+            department=dept.name if dept else "General",
+            department_fk=dept
         )
