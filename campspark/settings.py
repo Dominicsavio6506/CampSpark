@@ -11,9 +11,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY
-SECRET_KEY = 044nx9ls5u5&ju88$-hzjlo3ag$2ixt4184i!ws-&j83fl!3fb
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 DEBUG = False
-ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
@@ -90,13 +90,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'campspark.wsgi.application'
 
 conn_max_age = 600
-DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),
-        conn_max_age=conn_max_age,
-        ssl_require=True
-    )
-}
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
