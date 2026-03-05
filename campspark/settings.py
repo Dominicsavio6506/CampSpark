@@ -151,7 +151,7 @@ MIDDLEWARE = [
 
     # WhiteNoise must come right after SecurityMiddleware
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
+    'special_roles.middleware.SpecialRoleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

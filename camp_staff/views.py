@@ -6,7 +6,7 @@ from students.models import Student
 from marks.models import Marks
 from notes.models import Note
 from academics.models import Timetable, Exam
-
+from special_roles.models import StaffRole
 from ai_assistant.views import (
     detect_weak_students,
     detect_attendance_risk,
@@ -24,7 +24,7 @@ def staff_dashboard(request):
     if not staff:
         return render(request, "staff/error.html", {"msg": "Staff profile not created yet"})
 
-    students = Student.objects.filter(department=staff.department)
+    students = Student.objects.filter(department_fk__name=staff.department)
     marks = Marks.objects.filter(student__department=staff.department)
     notes = Note.objects.all()
 
@@ -34,8 +34,13 @@ def staff_dashboard(request):
     performance_predictions = predict_student_performance()
     study_recommendations = generate_study_recommendations()
     fee_risk_students = detect_fee_risk_students()
-
-    ai_message = f"📊 {students.count()} students | {marks.count()} marks | {notes.count()} notes"
+    staff_role = StaffRole.objects.filter(staff=staff).first()
+    ai_message = f"""
+    Students: {students.count()}
+    Marks Recorded: {marks.count()}
+    Weak Students: {len(weak_students)}
+    Attendance Risk: {len(attendance_risk)}
+    """
 
     return render(request, "staff/dashboard.html", {
         "staff": staff,
@@ -49,7 +54,8 @@ def staff_dashboard(request):
         "performance_predictions": performance_predictions,
         "study_recommendations": study_recommendations,
         "fee_risk_students": fee_risk_students,
-    })
+        "staff_role": staff_role
+    })  
 
 
 @login_required
@@ -58,7 +64,7 @@ def staff_students(request):
     if not staff:
         return render(request, "staff/error.html", {"msg": "Staff profile missing"})
 
-    students = Student.objects.filter(department=staff.department)
+    students = Student.objects.filter(department_fk__name=staff.department)
     return render(request, "staff/students.html", {"students": students})
 
 
@@ -74,7 +80,18 @@ def staff_marks(request):
 
 @login_required
 def staff_notes(request):
+
+    if request.method == "POST":
+        title = request.POST["title"]
+        content = request.POST["content"]
+
+        Note.objects.create(
+            title=title,
+            content=content
+        )
+
     notes = Note.objects.all()
+
     return render(request, "staff/notes.html", {"notes": notes})
 
 

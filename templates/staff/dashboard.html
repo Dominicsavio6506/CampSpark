@@ -34,6 +34,13 @@
 </div>
 <!-- END GRID -->
 
+{% if staff_role and staff_role.role == "Library" %}
+<div class="glass card staff-box">
+    <h3>📚 Library Management</h3>
+    <a href="/library/" class="btn">Open Library Panel</a>
+</div>
+{% endif %}
+
 <h3 class="doc-title">📊 Reports</h3>
 
 <div class="doc-section">
@@ -56,7 +63,6 @@
 </div>
 
 </div>
-<canvas id="staffChart" class="staff-chart"></canvas>
 
 <script>
 

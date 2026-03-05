@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from notifications.utils import send_attendance_alert
 
+
 @login_required
 def mark_attendance(request):
     students = Student.objects.all()
