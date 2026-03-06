@@ -1,1 +1,1 @@
-web: gunicorn campspark.wsgi
+web: gunicorn campspark.wsgi:application --workers 2 --threads 2

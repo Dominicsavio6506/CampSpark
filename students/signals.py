@@ -8,17 +8,16 @@ from academics.models import Department
 @receiver(post_save, sender=User)
 def create_student_for_user(sender, instance, created, **kwargs):
 
-    # Skip admin accounts
     if created and not instance.is_superuser:
 
-        dept = Department.objects.first()
+        if not Student.objects.filter(user=instance).exists():
 
-        # Only create student if department exists
-        if dept:
+            dept = Department.objects.first()
+
             Student.objects.create(
                 user=instance,
                 name=instance.username,
                 roll_number=f"AUTO-{instance.id}",
                 year=1,
-                department_fk=dept
+                department_fk=dept if dept else None
             )

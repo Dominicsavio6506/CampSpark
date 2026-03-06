@@ -15,8 +15,19 @@ User = get_user_model()
 
 @login_required
 def projects_home(request):
-    if not StaffStudentAssignment.objects.filter(staff=request.user).exists():
-        return redirect("dashboard")
+
+    context = {}
+
+    if hasattr(request.user, "student"):
+        context["role"] = "student"
+
+    elif hasattr(request.user, "staff"):
+        context["role"] = "staff"
+
+    elif request.user.is_superuser:
+        context["role"] = "admin"
+
+    return render(request, "projects/projects_home.html", context)
 
 
 # ==========================

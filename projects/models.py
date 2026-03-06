@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from students.models import Student
-
+from academics.models import Department
 
 # ==========================
 # MAIN PROJECT MODEL

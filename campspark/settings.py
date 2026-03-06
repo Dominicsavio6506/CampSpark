@@ -12,17 +12,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+DEBUG = False
+ALLOWED_HOSTS = [
+    "web-production-a2fef.up.railway.app",
+    "127.0.0.1",
+    "localhost"
+]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
-    "http://127.0.0.1:8000"
 ]
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+    BASE_DIR / "static",
+] if (BASE_DIR / "static").exists() else []
 
 # APPLICATIONS
 INSTALLED_APPS = [
@@ -35,7 +38,7 @@ INSTALLED_APPS = [
 
 'camp_staff',
 'adminpanel',
-'notifications.apps.NotificationsConfig',   # 👈 ADD THIS
+'notifications.apps.NotificationsConfig',   
 'fees',
 'marks',
 'notes',
@@ -95,7 +98,7 @@ DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if DATABASE_URL:
     DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL)
+        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
     }
 else:
     DATABASES = {
@@ -171,6 +174,7 @@ MIDDLEWARE = [
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_MAX_AGE = 31536000
 
 CACHES = {
     "default": {
@@ -178,3 +182,5 @@ CACHES = {
         "LOCATION": "campspark-cache",
     }
 }
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
