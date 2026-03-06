@@ -2,100 +2,92 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from django.urls import path, include
+
 from django.contrib.auth import views as auth_views
-from complaints_app.views import submit_complaint
-from complaints_app.views import complaint_stats
-from dashboard.views import admin_dashboard
 
-
-
-# AI Views
-from ai_assistant.views import complaint_ai_dashboard, campus_ai_chat, test_ai_page
-
-# Admin Panel Views
 from adminpanel.views import (
     home,
     login_view,
     logout_view,
     dashboard_router,
-    staff_dashboard,    
+    staff_dashboard,
     admin_dashboard
 )
+
+from ai_assistant.views import complaint_ai_dashboard, campus_ai_chat, test_ai_page
+from complaints_app.views import complaint_stats
+
 
 urlpatterns = [
 
     # Django Admin
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
 
     # Home & Login
     path("", home, name="home"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
 
-    # Smart Role Router
+    # Smart Dashboard Router
     path("dashboard/", dashboard_router, name="dashboard"),
 
-    # Dashboards (Staff & Admin Only)
+    # Staff
     path("staff/", staff_dashboard, name="staff_dashboard"),
     path("staff/", include("camp_staff.urls")),
+
+    # Admin Panel
     path("admin-panel/", admin_dashboard, name="admin_dashboard"),
 
-    # ✅ Student Module (ONLY route here)
+    # Student Module
     path("student/", include("students.urls")),
 
-    # AI Routes
+    # AI Assistant
     path("ai/", include("ai_assistant.urls")),
     path("ai/complaint-stats/", complaint_ai_dashboard),
     path("ai/chat/", campus_ai_chat),
     path("ai/test/", test_ai_page),
 
-    # Complaints Module
+    # Complaints
     path("complaints/", include("complaints_app.urls")),
-    
+    path("stats/", complaint_stats),
 
-    # Attendance API / Module
+    # Attendance
     path("attendance/", include("attendance.urls")),
 
-    #scolarship module
+    # Scholarships
     path("scholarships/", include("scholarships.urls")),
 
-    #Attendance 
-    path("attendance/", include("attendance.urls")),
-
-    #mark
+    # Marks
     path("marks/", include("marks.urls")),
+
+    # Fees
     path("fees/", include("camp_fees.urls")),
 
+    # Academics
     path("academics/", include("academics.urls")),
-    path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 
-    #Notification
-    path('notifications/', include('notifications.urls')),
+    # Notifications
+    path("notifications/", include("notifications.urls")),
 
-    #Report module
-    path('reports/', include('reports.urls')),
+    # Reports
+    path("reports/", include("reports.urls")),
 
-    path('student/', include('students.urls')),
-    path("stats/",complaint_stats),
+    # Special Roles
+    path("special/", include("special_roles.urls")),
 
-    path('special/', include('special_roles.urls')),
-    path('complaints/', include('complaints_app.urls')),
+    # Library
+    path("library/", include("library.urls")),
 
-    path('dashboard/', include('dashboard.urls')),
-    path('admin-panel/', admin_dashboard, name='admin_dashboard'),
-    path('library/', include('library.urls')),
-    path('assets/', include('assets.urls')),
+    # Assets
+    path("assets/", include("assets.urls")),
 
+    # Events
     path("events/", include("events.urls")),
 
+    # Projects
     path("projects/", include("projects.urls")),
-
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# Media Support (Photos)
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Media support
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
