@@ -6,7 +6,7 @@ from students.models import Student
 from marks.models import Marks
 from notes.models import Note
 from academics.models import Timetable, Exam
-from special_roles.models import StaffRole
+from special_roles.models import UserSpecialRole
 from ai_assistant.views import (
     detect_weak_students,
     detect_attendance_risk,
@@ -34,7 +34,7 @@ def staff_dashboard(request):
     performance_predictions = predict_student_performance()
     study_recommendations = generate_study_recommendations()
     fee_risk_students = detect_fee_risk_students()
-    staff_role = StaffRole.objects.filter(staff=staff).first()
+    staff_role = UserSpecialRole.objects.filter(user=request.user).first()
     ai_message = f"""
     Students: {students.count()}
     Marks Recorded: {marks.count()}

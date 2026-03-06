@@ -1,1 +1,1 @@
-web: gunicorn campspark.wsgi:application
+web: gunicorn campspark.wsgi

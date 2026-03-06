@@ -1,5 +1,5 @@
 from .models import UserSpecialRole
-from special_roles.models import StaffRole
+from special_roles.models import UserSpecialRole
 
 class SpecialRoleMiddleware:
 
@@ -12,9 +12,7 @@ class SpecialRoleMiddleware:
 
         if request.user.is_authenticated:
 
-            role = StaffRole.objects.filter(
-                staff__user=request.user
-            ).first()
+            role = UserSpecialRole.objects.filter(user=request.user).first()
 
             if role:
                 request.special_role = role.role

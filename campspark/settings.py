@@ -149,14 +149,24 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    # WhiteNoise must come right after SecurityMiddleware
+    # Static files (Railway / production)
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'special_roles.middleware.SpecialRoleMiddleware',
+
+    # Sessions must come before auth
     'django.contrib.sessions.middleware.SessionMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+
+    # Authentication loads request.user
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    # Messages requires auth
     'django.contrib.messages.middleware.MessageMiddleware',
+
+    # Your custom middleware (after auth)
+    'special_roles.middleware.SpecialRoleMiddleware',
+
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
