@@ -1,1 +1,1 @@
-web: gunicorn campspark.wsgi:application --workers 2 --threads 2
+web: python manage.py collectstatic --noinput && gunicorn campspark.wsgi:application

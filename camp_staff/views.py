@@ -24,7 +24,7 @@ def staff_dashboard(request):
     if not staff:
         return render(request, "staff/error.html", {"msg": "Staff profile not created yet"})
 
-    students = Student.objects.filter(department_fk__name=staff.department)
+    students = Student.objects.filter(department=staff.department)
     marks = Marks.objects.filter(student__department=staff.department)
     notes = Note.objects.all()
 
@@ -35,12 +35,7 @@ def staff_dashboard(request):
     study_recommendations = generate_study_recommendations()
     fee_risk_students = detect_fee_risk_students()
     staff_role = UserSpecialRole.objects.filter(user=request.user).first()
-    ai_message = f"""
-    Students: {students.count()}
-    Marks Recorded: {marks.count()}
-    Weak Students: {len(weak_students)}
-    Attendance Risk: {len(attendance_risk)}
-    """
+    ai_message = f"Students: {students.count()} | Marks: {marks.count()} | Weak Students: {len(weak_students)}"
 
     return render(request, "staff/dashboard.html", {
         "staff": staff,
@@ -64,7 +59,7 @@ def staff_students(request):
     if not staff:
         return render(request, "staff/error.html", {"msg": "Staff profile missing"})
 
-    students = Student.objects.filter(department_fk__name=staff.department)
+    students = Student.objects.filter(department=staff.department)
     return render(request, "staff/students.html", {"students": students})
 
 
@@ -97,12 +92,22 @@ def staff_notes(request):
 
 @login_required
 def staff_ai(request):
-    return render(request, "staff/ai_report.html")
 
+    weak_students = detect_weak_students()
+    attendance_risk = detect_attendance_risk()
+
+    return render(request, "staff/ai_report.html", {
+        "weak_students": weak_students,
+        "attendance_risk": attendance_risk
+    })
 
 @login_required
 def upload_marks(request):
-    students = Student.objects.all()
+
+    staff = Staff.objects.filter(user=request.user).first()
+
+    students = Student.objects.filter(department=staff.department)
+
     q = request.GET.get("q")
     dept = request.GET.get("dept")
     year = request.GET.get("year")
@@ -142,7 +147,10 @@ def staff_timetable(request):
 
 @login_required
 def upload_exam_marks(request):
-    students = Student.objects.all()
+
+    staff = Staff.objects.filter(user=request.user).first()
+
+    students = Student.objects.filter(department=staff.department)
     exams = Exam.objects.all()
 
     if request.method == "POST":

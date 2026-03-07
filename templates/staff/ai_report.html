@@ -1,6 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>🤖 AI Staff Report</h2>
-<p>AI insights will appear here.</p>
+
+<h3>Weak Students</h3>
+<ul>
+{% for s in weak_students %}
+<li>{{ s.name }}</li>
+{% endfor %}
+</ul>
+
+<h3>Attendance Risk</h3>
+<ul>
+{% for s in attendance_risk %}
+<li>{{ s.name }}</li>
+{% endfor %}
+</ul>
 <a href="/staff/" class="back-dashboard-btn">⬅ Back to Dashboard</a>
 {% endblock %}

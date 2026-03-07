@@ -55,18 +55,3 @@ class Student(models.Model):
 
     def __str__(self):
         return self.name
-
-
-# Staff Model
-class Staff(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    subject = models.CharField(max_length=100)
-    role = models.CharField(
-        max_length=50,
-        choices=[('Faculty', 'Faculty'), ('HOD', 'HOD')]
-    )
-
-    def __str__(self):
-        return f"{self.name} - {self.department.name}"
