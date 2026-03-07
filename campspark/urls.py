@@ -84,8 +84,9 @@ urlpatterns = [
 
     # Projects
     path("projects/", include("projects.urls")),
+
+    #portfolio
+    path("portfolio/", include("portfolio.urls")),
 ]
 
-
-# Media support
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

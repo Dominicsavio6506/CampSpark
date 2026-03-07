@@ -826,8 +826,10 @@ document.querySelectorAll("a").forEach(link => {
 <nav>
   {% if not request.user.is_staff and not request.user.is_superuser %}
   {% endif %}
+    <a href="/portfolio/">💼 Portfolio</a>
   <a href="/notifications/">Notifications</a>
   <a href="/logout/">Logout</a>
+  
     {% if reminder_count > 0 %}
       <span style="
         position:absolute;

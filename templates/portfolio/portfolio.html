@@ -1,43 +1,60 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Portfolio</title>
-    <style>
-        body { font-family: Arial; background: #f5f7fb; padding: 40px; }
-        .card { background: white; padding: 25px; border-radius: 10px; max-width: 800px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
-        h1 { color: #333; }
-        .section { margin-top: 20px; }
-        .badge { display: inline-block; background: #e3e7ff; padding: 6px 12px; border-radius: 20px; margin: 4px; }
-        a.button { display: inline-block; margin-top: 20px; padding: 10px 20px; background: #4f46e5; color: white; text-decoration: none; border-radius: 6px; }
-    </style>
-</head>
-<body>
+{% extends "base.html" %} {% block content %}
 
-<div class="card">
+<div class="container mt-4" style="max-width: 900px">
+  <div class="card shadow-lg p-4" style="border-radius: 12px">
     {% if profile %}
-        <h1>{{ profile.name }}</h1>
-        <p><strong>{{ profile.role }}</strong></p>
-        <p>{{ profile.bio }}</p>
+    <div class="mb-3">
+      <h2>Developer Portfolio</h2>
+      <p class="text-muted">Creator of the CampSpark ERP System</p>
+    </div>
+    <h1 class="mb-2">{{ profile.name }}</h1>
+    <h5 class="text-muted">{{ profile.role }}</h5>
 
-        <div class="section">
-            <h3>Skills</h3>
-            {% for skill in profile.skills.splitlines %}
-                <span class="badge">{{ skill }}</span>
-            {% endfor %}
-        </div>
+    <hr />
 
-        <div class="section">
-            <h3>Projects</h3>
-            <pre>{{ profile.projects }}</pre>
-        </div>
+    <p style="line-height: 1.6">{{ profile.bio }}</p>
 
-        {% if profile.resume %}
-            <a class="button" href="{{ profile.resume.url }}" download>Download Resume</a>
-        {% endif %}
-    {% else %}
-        <h2>No portfolio data yet</h2>
+    <!-- Skills -->
+    <div class="mt-4">
+      <h4>Skills</h4>
+
+      {% for skill in profile.skills.splitlines %}
+      <span class="badge bg-primary me-1 mb-1 p-2">{{ skill }}</span>
+      {% endfor %}
+    </div>
+
+    <!-- Projects -->
+    <div class="mt-4">
+      <h4>Projects</h4>
+
+      <div class="bg-light p-3 rounded">
+        <pre style="white-space: pre-wrap; font-family: inherit">
+{{ profile.projects }}</pre
+        >
+      </div>
+    </div>
+
+    <!-- Resume Button -->
+    {% if profile.resume %}
+    <div class="mt-4">
+      <a href="{{ profile.resume.url }}" class="btn btn-success me-2" download>
+        ⬇ Download Resume
+      </a>
+
+      <a
+        href="{{ profile.resume.url }}"
+        class="btn btn-outline-primary"
+        target="_blank"
+      >
+        👁 View Resume
+      </a>
+    </div>
+    {% endif %} {% else %}
+
+    <h3>No portfolio data yet</h3>
+
     {% endif %}
+  </div>
 </div>
 
-</body>
-</html>
+{% endblock %}
