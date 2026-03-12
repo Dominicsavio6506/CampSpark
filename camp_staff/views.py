@@ -59,7 +59,7 @@ def staff_students(request):
     if not staff:
         return render(request, "staff/error.html", {"msg": "Staff profile missing"})
 
-    students = Student.objects.filter(department=staff.department)
+    students = Student.objects.all()
     return render(request, "staff/students.html", {"students": students})
 
 
