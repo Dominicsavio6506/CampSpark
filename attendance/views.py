@@ -63,7 +63,7 @@ def student_attendance_view(request):
 
 @login_required
 def my_attendance(request):
-    student = Student.objects.filter().first()
+    student = Student.objects.get(user=request.user)
 
     if not student:
         return render(request, "attendance/student_view.html", {

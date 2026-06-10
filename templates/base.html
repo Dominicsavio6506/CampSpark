@@ -784,6 +784,7 @@ document.querySelectorAll("a").forEach(link => {
 {% if request.user.is_staff and not request.user.is_superuser %}
 <a href="/assets/list/" class="menu-item">🏛 Asset List</a>
 <a href="/assets/report/" class="menu-item">🧾 Report Asset Issue</a>
+<a href="/attendance/mark/">📅 Mark Attendance</a>
 {% endif %}
 
 {% if request.user.groups.all.0.name == "Maintenance" %}

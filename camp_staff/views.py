@@ -24,7 +24,7 @@ def staff_dashboard(request):
     if not staff:
         return render(request, "staff/error.html", {"msg": "Staff profile not created yet"})
 
-    students = Student.objects.filter(department=staff.department)
+    students = Student.objects.all()
     marks = Marks.objects.filter(student__department=staff.department)
     notes = Note.objects.all()
 
