@@ -75,11 +75,11 @@ CampSpark includes an AI-powered chatbot that provides intelligent assistance an
 
 ## Login Page
 
-![Login Page](screenshots/login_page.png)
+![Login_Page](screenshots/Login_page.png)
 
 ## Student Dashboard
 
-![Student Dashboard](screenshots/Student_dashboard.png)
+![Student Dashboard](screenshots/Student_dashboard_1.png)
 
 ## Staff Dashboard
 
