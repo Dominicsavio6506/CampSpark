@@ -1,10 +1,10 @@
-# CampSpark ERP System
+# 🎓 CampSpark ERP System
 
-CampSpark is a web-based College Management ERP system developed using Django, PostgreSQL, Bootstrap, and AI integration technologies. The platform is designed to automate and simplify academic and administrative operations within educational institutions.
+CampSpark is an AI-powered College Management ERP System developed using Django, PostgreSQL, Bootstrap, and Python. The platform automates academic and administrative activities and provides a centralized system for students, faculty, and administrators.
 
 ---
 
-## Features
+# 🚀 Features
 
 - Student Management
 - Staff Management
@@ -23,55 +23,105 @@ CampSpark is a web-based College Management ERP system developed using Django, P
 
 ---
 
-## Technology Stack
+# 🛠 Technology Stack
 
-### Backend
+## Backend
 - Python
 - Django
 
-### Frontend
+## Frontend
 - HTML
 - CSS
 - Bootstrap
 - JavaScript
 
-### Database
+## Database
 - PostgreSQL
 - SQLite
 
-### Other Technologies
+## Tools & Services
+- GitHub
+- Railway
 - Chart.js
-- Railway Deployment
-- GitHub Version Control
+- Whitenoise
 
 ---
 
-## System Modules
+# 📂 System Modules
 
 - Authentication & User Roles
 - Student Dashboard
 - Staff Dashboard
 - Admin Panel
 - Attendance Module
-- Fee Module
+- Fee Management Module
 - Library Module
-- AI Chatbot Module
-- Notifications System
-- Reports & Analytics
-- Event Management
+- Event Management Module
 - Complaint & Grievance Module
+- Notification System
+- Reports & Analytics
+- Student Project Management
+- AI Assistant Module
 
 ---
 
-## AI Integration
+# 🤖 AI Integration
 
-CampSpark includes an AI-powered assistant chatbot to improve user interaction and provide smart assistance inside the ERP system.
+CampSpark includes an AI-powered chatbot that provides intelligent assistance and improves user interaction inside the ERP platform.
 
 ---
 
-## Installation
+# 📸 System Screenshots
 
-Clone the repository:
+## Login Page
+
+![Login Page](screenshots/login_page.png)
+
+## Student Dashboard
+
+![Student Dashboard](screenshots/Student_dashboard.png)
+
+## Staff Dashboard
+
+![Staff Dashboard](screenshots/Staff_dashboard.png)
+
+## Admin Dashboard
+
+![Admin Dashboard](screenshots/Admin_dash_board.png)
+
+## AI Assistant
+
+![AI Assistant](screenshots/Camspark_AI.png)
+
+## Complaint Management
+
+![Complaint Module](screenshots/Complaint_management_page.png)
+
+## Event Management
+
+![Events Module](screenshots/Event_home_page.png)
+
+## Library Module
+
+![Library Module](screenshots/Library_control_page.png)
+
+## Notifications
+
+![Notification Module](screenshots/Notification_page.png)
+
+## Smart Reminder Popup
+
+![Smart Popup](screenshots/Smart_popup.png)
+
+## Project Management
+
+![Projects](screenshots/Project_home_page.png)
+
+---
+
+# ⚙ Installation
+
+Clone repository:
 
 ```bash
 git clone https://github.com/Dominicsavio6506/CampSpark.git
@@ -97,30 +147,52 @@ python manage.py runserver
 
 ---
 
-## Deployment
+# ☁ Deployment
 
-The project was deployed using Railway cloud hosting with PostgreSQL database support.
+CampSpark has been deployed using Railway cloud hosting with PostgreSQL database support.
 
 ---
 
-## Future Enhancements
+# 🔮 Future Enhancements
 
 - Mobile Application
 - Advanced AI Analytics
 - Multi-College Support
 - Biometric Attendance
 - Enhanced Security Features
+- Android Application
+- AI-based Student Performance Prediction
 
 ---
 
-## Developer
+# 👨‍💻 Developer
 
-Arul  
-B.Sc Computer Science  
+### Arul
+
+**B.Sc Computer Science**
+
 Government Arts and Science College, Manapparai
 
-GitHub:
+### Skills
+
+- Python
+- Django
+- PostgreSQL
+- Bootstrap
+- HTML
+- CSS
+- JavaScript
+- AI Integration
+- REST API
+
+### GitHub
+
 https://github.com/Dominicsavio6506
 
-LinkedIn:
+### LinkedIn
+
 https://www.linkedin.com/in/dominic-savio-66b5792ba
+
+---
+
+## ⭐ If you found this project useful, consider giving it a star.
