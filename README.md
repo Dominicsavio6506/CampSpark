@@ -167,7 +167,7 @@ CampSpark has been deployed using Railway cloud hosting with PostgreSQL database
 
 # 👨‍💻 Developer
 
-### Arul
+### Dominic savio
 
 **B.Sc Computer Science**
 
