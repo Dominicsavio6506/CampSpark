@@ -35,15 +35,16 @@ def event_detail(request, event_id):
     participants_list = participants.select_related('student__student')
 
     already_registered = False
+    is_admin = False
+    is_incharge = False
+
     if request.user.is_authenticated:
         already_registered = participants.filter(student=request.user).exists()
-
-    is_admin = request.user.is_superuser
-
-    is_incharge = EventStaffIncharge.objects.filter(
-        event=event,
-        staff=request.user
-    ).exists()
+        is_admin = request.user.is_superuser
+        is_incharge = EventStaffIncharge.objects.filter(
+            event=event,
+            staff=request.user
+        ).exists()
 
     can_view_participants = is_admin or is_incharge
 
@@ -117,6 +118,16 @@ def my_events(request):
 def download_report(request, event_id):
     event = get_object_or_404(Event, id=event_id)
 
+    # Permission check: Only superusers or staff incharge can download the report
+    is_admin = request.user.is_superuser
+    is_incharge = EventStaffIncharge.objects.filter(
+        event=event,
+        staff=request.user
+    ).exists()
+
+    if not (is_admin or is_incharge):
+        return HttpResponse("Forbidden: You are not authorized to download this report.", status=403)
+
     # deadline check
     deadline_passed = False
     if event.registration_deadline_date and event.registration_deadline_time:
@@ -148,12 +159,21 @@ def download_report(request, event_id):
     data = [["S.No", "Name", "Department", "Year"]]
 
     for i, r in enumerate(registrations, start=1):
-        student = r.student.student
+        try:
+            student = r.student.student
+            student_name = student.name
+            dept = student.department_fk.name if student.department_fk else student.department
+            student_year = f"Year {student.year}"
+        except AttributeError:
+            student_name = r.student.username
+            dept = "N/A"
+            student_year = "N/A"
+
         data.append([
             str(i),
-            student.name,
-            student.department_fk.name,
-            f"Year {student.year}"
+            student_name,
+            dept,
+            student_year
         ])
 
     # -------- CREATE TABLE --------

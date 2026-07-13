@@ -6,8 +6,8 @@ from groq import Groq
 from .models import ChatHistory
 from students.models import Student
 from marks.models import Marks
-from attendance.models import Attendance
-from fees.models import Fee
+from attendance.models import Attendance, AttendanceRecord
+from camp_fees.models import Fee
 from complaints_app.models import Complaint
 from notifications.models import Notification
 from events.models import Event
@@ -17,6 +17,15 @@ from .smart_ai import smart_ai_response
 from django.views.decorators.csrf import csrf_exempt
 import json
 import os
+
+allowed_topics = [
+    "attendance", "fee", "fees", "marks",
+    "student", "staff", "admin", "event", "events",
+    "complaint", "library", "dashboard", "campspark", "erp"
+]
+
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 
 def campus_ai_chat(request):
 
@@ -54,6 +63,9 @@ def ai_reply(request):
 
     if not any(topic in user_message.lower() for topic in allowed_topics):
         return JsonResponse({"reply": "⚠️ CampSpark AI answers only campus-related questions."})
+
+    if not client:
+        return JsonResponse({"reply": "⚠️ Groq client is not initialized because GROQ_API_KEY is not set."})
 
     try:
         response = client.chat.completions.create(
@@ -105,11 +117,11 @@ def detect_attendance_risk():
     risk_students = []
 
     for student in Student.objects.all():
-        records = Attendance.objects.all()
+        records = AttendanceRecord.objects.filter(student=student)
 
         if records.exists():
             total = records.count()
-            present = records.filter(status="Present").count()
+            present = records.filter(present=True).count()
             percent = (present / total) * 100 if total > 0 else 0
 
             if percent < 75:
@@ -223,17 +235,19 @@ def detect_complaint_patterns():
 def detect_dropout_risk():
     risk_summary = {"high_risk_count": 0, "medium_risk_count": 0, "low_risk_count": 0}
 
-    for record in Attendance.objects.all():
-        percentage = getattr(record, "percentage", None)
-        if percentage is None:
-            continue
+    for student in Student.objects.all():
+        records = AttendanceRecord.objects.filter(student=student)
+        if records.exists():
+            total = records.count()
+            present = records.filter(present=True).count()
+            percentage = (present / total) * 100 if total > 0 else 0
 
-        if percentage < 50:
-            risk_summary["high_risk_count"] += 1
-        elif percentage < 75:
-            risk_summary["medium_risk_count"] += 1
-        else:
-            risk_summary["low_risk_count"] += 1
+            if percentage < 50:
+                risk_summary["high_risk_count"] += 1
+            elif percentage < 75:
+                risk_summary["medium_risk_count"] += 1
+            else:
+                risk_summary["low_risk_count"] += 1
 
     return risk_summary
 
@@ -333,18 +347,18 @@ def voice_command_api(request):
     if "attendance" in command or "percentage" in command:
         try:
             student = Student.objects.get(user=user)
-            records = Attendance.objects.filter(student=student)
+            records = AttendanceRecord.objects.filter(student=student)
 
             if records.exists():
                 total = records.count()
-                present = records.filter(status="Present").count()
+                present = records.filter(present=True).count()
                 percent = round((present / total) * 100, 2)
 
                 reply = f"Your attendance percentage is {percent} percent."
             else:
                 reply = "No attendance records found yet."
 
-        except:
+        except Exception as e:
             reply = "Student profile not linked to your account."
 
         return JsonResponse({"reply": reply})

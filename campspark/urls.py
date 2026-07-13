@@ -28,6 +28,7 @@ urlpatterns = [
 
     # Smart Dashboard Router
     path("dashboard/", dashboard_router, name="dashboard"),
+    path("dashboard/", include("dashboard.urls")),
 
     # Staff
     path("staff/", staff_dashboard, name="staff_dashboard"),

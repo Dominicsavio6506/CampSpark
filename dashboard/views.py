@@ -10,7 +10,10 @@ from .utils import get_suggestion
 from django.shortcuts import get_object_or_404
 from events.models import Event
 from django.utils import timezone
+from datetime import date
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def student_dashboard(request):
     generate_student_reminders(request.user)
 
@@ -47,12 +50,14 @@ def student_dashboard(request):
     return render(request, "dashboard/student_dashboard.html", context)
 
 
+@login_required
 def reminders_page(request):
     reminders = Reminder.objects.filter(user=request.user)
     return render(request, "dashboard/reminders.html", {
         "reminders": reminders
     })
 
+@login_required
 def mark_read(request, id):
     reminder = Reminder.objects.filter(
         id=id,

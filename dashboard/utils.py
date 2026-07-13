@@ -1,6 +1,6 @@
 from .models import Reminder
 from attendance.models import AttendanceRecord
-from fees.models import Fee
+from camp_fees.models import Fee
 
 def generate_student_reminders(user):
     student = user.student
@@ -26,7 +26,7 @@ def generate_student_reminders(user):
         )
 
     # ---------- FEE DUE CHECK ----------
-    fee = Fee.objects.filter(student=student).order_by('-created_at').first()
+    fee = Fee.objects.filter(student=student).order_by('-last_updated').first()
 
     if fee and fee.due_amount > 0:
         Reminder.objects.get_or_create(
@@ -52,7 +52,7 @@ def get_today_focus_student(user):
         attendance_percent = 100
 
     # ---------- FEES ----------
-    fee = Fee.objects.filter(student=student).order_by('-created_at').first()
+    fee = Fee.objects.filter(student=student).order_by('-last_updated').first()
     due = fee.due_amount if fee else 0
 
     return {

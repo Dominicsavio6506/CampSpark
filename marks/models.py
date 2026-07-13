@@ -19,6 +19,9 @@ class Marks(models.Model):
         elif self.total >= 50: return "D"
         return "F"
 
+    def grade_point(self):
+        return self.total / 10.0
+
     def save(self, *args, **kwargs):
         self.total = (self.internal_mark or 0) + (self.semester_mark or 0)
         super().save(*args, **kwargs)

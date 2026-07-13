@@ -49,14 +49,20 @@ class FeePayment(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        total_paid = self.fee.payments.aggregate(total=models.Sum('amount_paid'))['total'] or Decimal('0.00')
 
-        new_paid = self.fee.paid_amount + self.amount_paid
+        if total_paid > self.fee.total_amount:
+            total_paid = self.fee.total_amount
 
-        if new_paid > self.fee.total_amount:
-            new_paid = self.fee.total_amount
-
-        self.fee.paid_amount = new_paid
+        self.fee.paid_amount = total_paid
         self.fee.save()
+
+    def delete(self, *args, **kwargs):
+        fee = self.fee
+        super().delete(*args, **kwargs)
+        total_paid = fee.payments.aggregate(total=models.Sum('amount_paid'))['total'] or Decimal('0.00')
+        fee.paid_amount = total_paid
+        fee.save()
 
     def __str__(self):
         return f"{self.fee.student.name} - ₹{self.amount_paid}"
@@ -72,12 +78,24 @@ class Scholarship(models.Model):
     applied_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
+        if self.pk:
+            old_amount = Scholarship.objects.get(pk=self.pk).amount
+            diff = self.amount - old_amount
+        else:
+            diff = self.amount
+
         super().save(*args, **kwargs)
         fee = Fee.objects.filter(student=self.student).first()
         if fee:
-            fee.total_amount = max(0, fee.total_amount - self.amount)
+            fee.total_amount = max(Decimal('0.00'), fee.total_amount - diff)
             fee.save()
 
+    def delete(self, *args, **kwargs):
+        fee = Fee.objects.filter(student=self.student).first()
+        if fee:
+            fee.total_amount = fee.total_amount + self.amount
+            fee.save()
+        super().delete(*args, **kwargs)
 
     def __str__(self):
         return f"{self.student.name} - ₹{self.amount}"

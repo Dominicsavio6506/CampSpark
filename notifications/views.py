@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -24,7 +24,8 @@ def my_notifications(request):
 
 @login_required
 def mark_as_read(request, notif_id):
-    notif = NotificationTarget.objects.get(
+    notif = get_object_or_404(
+        NotificationTarget,
         id=notif_id,
         user=request.user
     )

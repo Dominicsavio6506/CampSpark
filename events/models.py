@@ -62,5 +62,7 @@ def create_event_notification(sender, instance, created, **kwargs):
     if created:
         Notification.objects.create(
             title=f"📢 New Event Added: {instance.title}",
-            message=f"Event on {instance.date}"
+            message=f"Event on {instance.date}",
+            category="general",
+            priority="normal"
         ) 

@@ -212,7 +212,7 @@ def assign_project_to_staff(request, project_id):
     if not hasattr(request.user, "staff"):
         return redirect("home")
 
-    project = Project.objects.get(id=project_id)
+    project = get_object_or_404(Project, id=project_id)
 
     if project.guide_staff:
         return redirect("staff_all")
@@ -258,7 +258,7 @@ def manual_archive(request, project_id):
     if not request.user.is_superuser:
         return redirect("home")
 
-    project = Project.objects.get(id=project_id)
+    project = get_object_or_404(Project, id=project_id)
     project.status = "ARCHIVE"
     project.save()
 

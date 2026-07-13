@@ -176,11 +176,3 @@ def student_certificates(request):
         "student": student
     })
 
-
-@login_required
-def student_profile(request):
-    student = request.user.student
-
-    return render(request, "students/profile.html", {
-        "student": student
-    })

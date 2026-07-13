@@ -8,7 +8,7 @@ from academics.models import Department
 @receiver(post_save, sender=User)
 def create_student_for_user(sender, instance, created, **kwargs):
 
-    if created and not instance.is_superuser:
+    if created and not instance.is_superuser and not instance.is_staff:
 
         if not Student.objects.filter(user=instance).exists():
 

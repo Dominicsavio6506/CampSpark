@@ -20,6 +20,8 @@ def student_marks(request):
 @login_required
 def exam_results(request):
     student = Student.objects.filter(user=request.user).first()
+    if not student:
+        return render(request, "marks/exam_results.html", {"error": "Student profile not found", "marks": []})
     marks = Marks.objects.filter(student=student)
 
     return render(request, "marks/exam_results.html", {"marks": marks})
@@ -27,6 +29,8 @@ def exam_results(request):
 @login_required
 def student_gpa(request):
     student = Student.objects.filter(user=request.user).first()
+    if not student:
+        return render(request, "marks/gpa.html", {"error": "Student profile not found"})
     marks = Marks.objects.filter(student=student)
 
     if not marks.exists():
@@ -55,8 +59,11 @@ def rank_list(request):
 
     return render(request, "marks/rank_list.html", {"rank_data": rank_data})
 
+@login_required
 def download_report(request):
     student = Student.objects.filter(user=request.user).first()
+    if not student:
+        return HttpResponse("Student profile not found.", status=404)
     marks = Marks.objects.filter(student=student)
 
     response = HttpResponse(content_type='application/pdf')

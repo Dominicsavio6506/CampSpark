@@ -101,6 +101,8 @@ def student_pdf(request):
     doc.build(elements)
     return response
 
+@login_required
+@user_passes_test(lambda u: u.is_superuser or hasattr(u, 'staff'))
 def attendance_pdf(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="attendance_report.pdf"'
@@ -387,9 +389,11 @@ def excel_report(request):
         cell.font = bold
 
     for m in Marks.objects.select_related('student'):
+        roll = m.student.roll_number if m.student else "N/A"
+        name = m.student.name if m.student else "N/A"
         ws3.append([
-            m.student.roll_number,
-            m.student.name,
+            roll,
+            name,
             m.subject,
             m.internal_mark,
             m.semester_mark,
@@ -406,10 +410,13 @@ def excel_report(request):
 
     for r in AttendanceRecord.objects.select_related('student', 'attendance'):
         status = "Present" if r.present else "Absent"
+        roll = r.student.roll_number if r.student else "N/A"
+        name = r.student.name if r.student else "N/A"
+        date_str = str(r.attendance.date) if r.attendance else "N/A"
         ws4.append([
-            r.student.roll_number,
-            r.student.name,
-            str(r.attendance.date),
+            roll,
+            name,
+            date_str,
             status
         ])
 
@@ -422,9 +429,11 @@ def excel_report(request):
         cell.font = bold
 
     for f in Fee.objects.select_related('student'):
+        roll = f.student.roll_number if f.student else "N/A"
+        name = f.student.name if f.student else "N/A"
         ws5.append([
-            f.student.roll_number,
-            f.student.name,
+            roll,
+            name,
             f.total_amount,
             f.paid_amount,
             f.due_amount,
@@ -441,9 +450,12 @@ def excel_report(request):
     return response
 
 @login_required
-@user_passes_test(is_student)
 def semester_result_pdf(request, student_id):
     student = get_object_or_404(Student, id=student_id)
+
+    # Security: Enforce student ownership check
+    if not (request.user.is_superuser or hasattr(request.user, 'staff') or (hasattr(request.user, 'student') and request.user.student.id == student.id)):
+        return HttpResponse("Forbidden: You are not authorized to view this document.", status=403)
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="{student.name}_result.pdf"'
@@ -501,9 +513,12 @@ def semester_result_pdf(request, student_id):
     return response
 
 @login_required
-@user_passes_test(is_student)
 def bonafide_pdf(request, student_id):
     student = get_object_or_404(Student, id=student_id)
+
+    # Security: Enforce student ownership check
+    if not (request.user.is_superuser or hasattr(request.user, 'staff') or (hasattr(request.user, 'student') and request.user.student.id == student.id)):
+        return HttpResponse("Forbidden: You are not authorized to view this document.", status=403)
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="bonafide.pdf"'
@@ -532,39 +547,6 @@ def bonafide_pdf(request, student_id):
     return response
 
 @login_required
-@user_passes_test(is_student)
-def fee_certificate_pdf(request, student_id):
-    student = get_object_or_404(Student, id=student_id)
-
-    fees = Fee.objects.filter(student=student)
-    total_paid = sum(f.paid_amount for f in fees)
-
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="fee_certificate.pdf"'
-
-    doc = SimpleDocTemplate(response, pagesize=A4)
-    elements = []
-    styles = getSampleStyleSheet()
-
-    elements.append(Paragraph("FEE PAID CERTIFICATE", styles['Title']))
-    elements.append(Spacer(1, 40))
-
-    text = f"""
-    This is to certify that <b>{student.name}</b>
-    (Roll No: {student.roll_number})
-    has paid a total fee amount of
-    <b>₹{total_paid}</b> successfully.
-    """
-
-    elements.append(Paragraph(text, styles['Normal']))
-    elements.append(Spacer(1, 60))
-    elements.append(Paragraph("Authorized Signature", styles['Normal']))
-
-    doc.build(elements)
-    return response
-
-@login_required
-@user_passes_test(is_staff)
 def attendance_full_pdf(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="attendance_full.pdf"'
@@ -600,8 +582,14 @@ def attendance_full_pdf(request):
     doc.build(elements)
     return response
 
+@login_required
 def fee_certificate_pdf(request, student_id):
     student = get_object_or_404(Student, id=student_id)
+
+    # Security: Enforce student ownership check
+    if not (request.user.is_superuser or hasattr(request.user, 'staff') or (hasattr(request.user, 'student') and request.user.student.id == student.id)):
+        return HttpResponse("Forbidden: You are not authorized to view this document.", status=403)
+
     fees = Fee.objects.filter(student=student)
     total_paid = sum(f.paid_amount for f in fees)
 

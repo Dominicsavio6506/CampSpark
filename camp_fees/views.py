@@ -10,8 +10,14 @@ from notifications.utils import send_fee_due_alert
 @login_required
 def my_fees(request):
     student = Student.objects.filter(user=request.user).first()
+    if not student:
+        return render(request, "fees/my_fees.html", {
+            "fee": None,
+            "payments": []
+        })
+
     fee = Fee.objects.filter(student=student).first()
-    payments = FeePayment.objects.filter(fee=fee)
+    payments = FeePayment.objects.filter(fee=fee) if fee else []
 
     # ✅ AUTO ALERT HERE (CORRECT DATA SOURCE)
     if fee:
@@ -25,7 +31,12 @@ def my_fees(request):
 @login_required
 def download_fee_receipt(request):
     student = Student.objects.filter(user=request.user).first()
+    if not student:
+        return HttpResponse("Student profile not found.", status=404)
+
     fee = Fee.objects.filter(student=student).first()
+    if not fee:
+        return HttpResponse("No fee record found.", status=404)
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="fee_receipt.pdf"'
