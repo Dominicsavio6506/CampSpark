@@ -4,6 +4,32 @@ CampSpark is an AI-powered College Management ERP System developed using Django,
 
 ---
 
+## 🌐 Live URL & Repository Links
+* **Live Deployment**: [https://campspark-production.up.railway.app/](https://campspark-production.up.railway.app/)
+* **GitHub Repository**: [https://github.com/Dominicsavio6506/CampSpark](https://github.com/Dominicsavio6506/CampSpark)
+
+---
+
+## 🔑 Seeded Test Credentials (for Reviewers)
+Use the following credentials to explore the different roles on the live site:
+
+| Role | Username | Password | Access Details |
+|---|---|---|---|
+| **Administrator** | `admin` | `adminpass` | Full admin panel access, database views |
+| **Faculty Staff** | `staff1` to `staff12` | `staffpass` | Attendance submission, grading, student projects |
+| **Student** | `student1` to `student30` | `studpass` | Personal dashboard, results, library, fee receipts |
+
+---
+
+## 🔒 Recent Security & Architectural Updates
+We recently completed a comprehensive code audit and reconstruction pass:
+- **Certificate Ownership Checks**: Secured PDF certificate generation (Bonafide, Semester Results, Fee Certificates) with ownership guards, allowing students to access only their own files while preserving access for staff and superusers.
+- **Reminders Routing**: Wired up `dashboard.urls` under the core project configuration, enabling active reminder badge counts and focus updates.
+- **Accurate Fee Calculation**: Restructured model operations to prevent double-counting on fee edits and updated scholarship logic to adjust by difference rather than raw re-applications.
+- **Safe Analytics Reporting**: Wrapped data processing functions in Excel reports to handle missing profiles without crashing.
+
+---
+
 # 🚀 Features
 
 - Student Management
@@ -67,7 +93,11 @@ CampSpark is an AI-powered College Management ERP System developed using Django,
 
 # 🤖 AI Integration
 
-CampSpark includes an AI-powered chatbot that provides intelligent assistance and improves user interaction inside the ERP platform.
+CampSpark integrates a advanced AI chatbot powered by the **Groq API (Llama-3.3-70B model)**. The integration includes:
+- **Intelligent Routing**: Checks user queries for keywords related to attendance, fees, marks, library books, and events.
+- **Context Injection**: Dynamically injects live ERP metrics (total students, active events, fee totals, etc.) into the prompt context when a user asks ERP-related questions, ensuring responses are accurate and reflect real-time campus data.
+- **Domain Guarding**: Restricts the assistant's scope to campus-related topics only, blocking off-topic conversations.
+- **Conversation Logs**: Automatically saves chat history locally in the database for faculty and staff reviews.
 
 ---
 
