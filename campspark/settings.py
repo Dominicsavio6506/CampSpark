@@ -23,6 +23,11 @@ ALLOWED_HOSTS = [
     if h.strip()
 ]
 
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    ALLOWED_HOSTS.append(".onrender.com")
+
 CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
     "https://campspark-production.up.railway.app",
