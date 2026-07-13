@@ -31,6 +31,7 @@ if RENDER_EXTERNAL_HOSTNAME:
 CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
     "https://campspark-production.up.railway.app",
+    "https://*.onrender.com",
 ]
 
 STATICFILES_DIRS = [
