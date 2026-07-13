@@ -17,3 +17,4 @@ pillow==12.1.0
 
 # AI Client
 groq==1.0.0
+requests==2.32.5
