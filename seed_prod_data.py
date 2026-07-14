@@ -12,6 +12,13 @@ django.setup()
 
 from django.contrib.auth.models import User
 from django.utils import timezone
+
+# --- Idempotency check: skip if DB is already seeded ---
+from students.models import Student as _StudentCheck
+if _StudentCheck.objects.exists():
+    print("Database already seeded — skipping seed_prod_data.py")
+    sys.exit(0)
+
 from academics.models import Department as AcademicsDepartment, Course, Semester, Subject, Exam
 from students.models import Student
 from camp_staff.models import Staff
